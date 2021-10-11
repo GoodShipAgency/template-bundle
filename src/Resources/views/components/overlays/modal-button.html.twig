@@ -1,0 +1,21 @@
+{#
+options:
+    containerClass | defaults to "inline-block"
+    class | defaults to "btn btn--size-md btn--color-secondary"
+    flow | The form flow
+    buttonId | can be used instead of flow name if no form is required
+    path | required | the hx-get path.
+    button
+        label | The content of the button
+#}
+<div x-data="window.overlayButton('modal', $el)" class="{{ containerClass|default('inline-block') }}">
+    <a
+        class="{{ class|default('btn btn--size-md btn--color-secondary') }}"
+        id="{{ flow is defined ? flow.name : modalId  }}_modal"
+        href="{{ path }}"
+        data-target="#modal-content"
+        @click="open($dispatch, $event)"
+    >
+        {{ button.label|default('Open') }}
+    </a>
+</div>

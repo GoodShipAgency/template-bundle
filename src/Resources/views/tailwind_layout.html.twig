@@ -1,0 +1,179 @@
+{% use "form_div_layout.html.twig" %}
+
+{% block pdv_pricing_row %}
+    <div
+        class="col-span-6"
+        x-data="{ tabActive: false }"
+        x-on:fees-tab-changed.window="tabActive = $event.detail.activeTab.id === '{{- row_attr.id -}}'"
+        x-show="tabActive"
+    >
+        {{ block('form_row') }}
+    </div>
+{% endblock %}
+
+{% block money_range_widget %}
+    <div class="grid grid-cols-6 gap-2">
+        {{ form_row(form.min) }}
+        {{ form_row(form.max) }}
+    </div>
+{% endblock %}
+
+{% block date_range_widget %}
+    <div class="grid grid-cols-6 gap-2">
+        {{ form_row(form.from) }}
+        {{ form_row(form.to) }}
+    </div>
+{% endblock %}
+
+{% block gbp_money_widget %}
+    <div class="relative money-type">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <span class="text-gray-500 sm:text-sm">£</span>
+        </div>
+
+        {{ money_pattern|form_encode_currency(block('form_widget_simple')) }}
+    </div>
+{% endblock %}
+
+{% block app_datetime_widget %}
+    {% set datepickerOptions = {
+        'enableTime': true,
+        'time_24hr': true,
+        'altFormat': 'F J Y \\a\\t H:i',
+        'dateFormat': 'Y-m-d H:i:S',
+        'minDate': min_date is defined ? min_date|date('Y-m-d H:i') : null,
+        'maxDate': max_date is defined ? max_date|date('Y-m-d H:i') : null,
+        'disable': disabled_dates|default([])|map((disableDate) => disableDate|date('Y-m-d')),
+        'disableWeekends': disable_weekends|default(false),
+    } %}
+
+    <div
+        class="relative date-picker"
+        x-data="{}"
+        x-init="window.initialiseDatePicker('#' + $el.firstElementChild.id, {{ datepickerOptions|json_encode }});"
+        x-cloak
+    >
+        {{ block('form_widget_simple') }}
+
+        <div class="absolute top-0 right-0 px-2 py-2 pointer-events-none">
+            <svg class="h-6 w-6 text-gray-400"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+        </div>
+    </div>
+{% endblock %}
+
+{% block app_date_widget %}
+    {% set datepickerOptions = {
+        'enableTime': false,
+        'altFormat': 'F J Y',
+        'dateFormat': 'Y-m-d',
+        'minDate': min_date is defined ? min_date|date('Y-m-d H:i') : null,
+        'maxDate': max_date is defined ? max_date|date('Y-m-d H:i') : null,
+        'disable': disabled_dates|default([])|map((disableDate) => disableDate|date('Y-m-d')),
+        'disableWeekends': disable_weekends|default(false),
+    } %}
+
+    <div
+        class="relative date-picker"
+         x-data="{}"
+         x-init="window.initialiseDatePicker('#' + $el.firstElementChild.id, {{ datepickerOptions|json_encode }})"
+         x-cloak
+    >
+        {{ block('form_widget_simple') }}
+
+        <div class="absolute top-0 right-0 px-2 py-2 pointer-events-none">
+            <svg class="h-6 w-6 text-gray-400"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+        </div>
+    </div>
+{% endblock %}
+
+{% block text_widget %}
+    {%- set type = type|default('text') -%}
+    {{ block('form_widget_simple') }}
+{% endblock %}
+
+{% block button_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('btn btn--size-lg btn--color-primary text-sm md:text-lg w-full max-w-xs md:max-w-1/2'))|trim}) -%}
+    {{- parent() -}}
+{%- endblock button_widget %}
+
+{%- block form_widget_simple -%}
+{#    {{ dump(form.vars) }}#}
+    {%- set type = type|default('text') -%}
+    {%- if type == 'range' or type == 'color' -%}
+        {# Attribute "required" is not supported #}
+        {%- set required = false -%}
+    {%- endif -%}
+
+    <input
+        type="{{ type }}"
+        id="{{ id }}"
+        name="{{ full_name }}"
+        class="{{ block('input_class') }}"
+        {{ block('widget_attributes') }}
+        {% if value is not empty %}value="{{ value }}" {% endif %}
+        {% if required is defined and required %}required {% endif %}
+    />
+{%- endblock form_widget_simple -%}
+
+{% block form_label -%}
+    {%- if label is same as(false) -%}
+        <div class="{{ block('form_label_class') }}"></div>
+    {%- else -%}
+        {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' ' ~ block('form_label_class'))|trim}) -%}
+        {{- parent() -}}
+    {%- endif -%}
+{%- endblock form_label %}
+
+{% block form_row -%}
+     {% if row_attr and row_attr.class %}
+        {# appends our form group class to the row_attr.class property #}
+        {%- set row_attr = row_attr|merge({'class': block('form_group_class') ~ row_attr.class }) -%}
+    {% else %}
+        {%- set row_attr = {'class': block('form_group_class')} -%}
+    {% endif %}
+
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~"_help"}} -%}
+    {%- endif -%}
+
+    <div{% with {attr: row_attr} %}{{ block('attributes') }}{% endwith %} data-row-id="{{- id -}}">
+        {{- form_label(form) -}}
+        {{- form_widget(form, widget_attr) -}}
+        {{- form_help(form) -}}
+
+        {{ form_errors(form) }}
+    </div>
+{%- endblock form_row %}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        <div class="mt-2">
+            <ul class="list-reset">
+                {%- for error in errors -%}
+                    <li class="mt-2 text-sm text-red-600">{{ error.message }}</li>
+                {%- endfor -%}
+            </ul>
+        </div>
+    {%- endif -%}
+{%- endblock form_errors -%}
+
+{% block form_label_class -%}
+    form-label
+{% endblock form_label_class -%}
+
+{% block input_class -%}
+    {% if form.vars.errors|length %}border-red-500 border-1{% endif %}
+{% endblock input_class -%}
+
+{% block form_group_class -%}
+    form-group col-span-6 sm:col-span-3 mb-4
+{% endblock form_group_class -%}
+
+{% block custom_button_class -%}
+    btn btn--size-md btn--color-primary
+{% endblock custom_button_class -%}

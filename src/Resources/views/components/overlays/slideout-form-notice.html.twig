@@ -1,0 +1,52 @@
+{#
+Blocks
+    actions | actions for the form, if no actions, a submit button will be displayed.
+options
+    flow
+        title
+        subtitle
+    message
+#}
+{% set actions %}
+    {% block actions %}{% endblock %}
+{% endset %}
+
+<div class="flex flex-col flex-1 slideout__container">
+    <!-- Header -->
+    <div class="px-4 py-6 sm:px-6 slideout__heading">
+        <div class="flex items-start justify-between space-x-3">
+            <div class="space-y-1">
+                <h2 class="text-lg font-medium slideout__heading-text" id="slideout-title">
+                    {{ flow.metadata.title }}
+                </h2>
+                {% if flow.metadata.subtitle is defined and flow.metadata.subtitle is not empty %}
+                    <p class="text-sm slideout__heading-subtext">
+                        {{ flow.metadata.subtitle }}
+                    </p>
+                {% endif %}
+            </div>
+
+            <div class="h-7 flex items-center">
+                <button
+                    type="button"
+                    class="rounded-md slideout__close-button"
+                    @click="$dispatch('slideout-close')"
+                >
+                    <span class="sr-only">Close panel</span>
+                    <svg class="h-6 w-6" x-description="Heroicon name: outline/x" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-6 space-y-6 sm:py-0 sm:space-y-0 w-full h-full flex flex-col slideout__content">
+
+        <div class="mx-auto py-6 px-4 max-w-xl w-full">
+            <div class="p-4">
+                {% include "components/alerts/warning.html.twig" with { message: messages is defined ? messages : message } %}
+            </div>
+        </div>
+    </div>
+</div>

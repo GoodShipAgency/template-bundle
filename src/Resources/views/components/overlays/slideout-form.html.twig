@@ -1,0 +1,85 @@
+{% form_theme form 'tailwind_layout.html.twig' %}
+{#
+Blocks
+    actions | actions for the form, if no actions, a submit button will be displayed.
+options
+    flow
+        title
+        subtitle
+        buttonLabel
+    form
+#}
+{% set actions %}
+    {% block actions %}{% endblock %}
+{% endset %}
+
+<div class="flex flex-col flex-1 slideout__container">
+    <!-- Header -->
+    <div class="px-4 py-6 sm:px-6 slideout__heading">
+        <div class="flex items-start justify-between space-x-3">
+            <div class="space-y-1">
+                <h2 class="text-lg font-medium slideout__heading-text" id="slideout-title">
+                    {{ flow.metadata.title }}
+                </h2>
+                {% if flow.metadata.subtitle is defined and flow.metadata.subtitle is not empty %}
+                    <p class="text-sm slideout__heading-subtext">
+                        {{ flow.metadata.subtitle }}
+                    </p>
+                {% endif %}
+            </div>
+
+            <div class="h-7 flex items-center">
+                <button
+                    type="button"
+                    class="rounded-md slideout__close-button"
+                    @click="$dispatch('slideout-close')"
+                >
+                    <span class="sr-only">Close panel</span>
+                    <svg class="h-6 w-6" x-description="Heroicon name: outline/x" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-6 space-y-6 sm:py-0 sm:space-y-0 w-full h-full flex flex-col slideout__content">
+        {% if success is defined and success == true %}
+            <div class="p-4">
+                {% include "components/alerts/success.html.twig" with {'message': 'Form successfully sent'} %}
+            </div>
+        {% endif %}
+
+        <div class="mx-auto py-6 px-4 max-w-xl w-full">
+            {{ form_start(form,
+                {
+                    attr: {
+                        class: 'space-y-6 w-full',
+                        action: action ?? app.request.requesturi,
+                        'hx-boost': 'true',
+                        'hx-swap': 'innerHTML',
+                        'hx-target': '#slideout-content',
+                        '@htmx:after-on-load': 'htmxDispatch({
+                            name: "'~form.vars.name~'",
+                        })',
+                        'hx-encoding': 'multipart/form-data'
+                    }
+                    | merge(form_attr|default({}))
+                }
+            )}}
+            {{ form_rest(form) }}
+
+            {% if actions|trim is not empty %}
+                {{ actions }}
+            {% else %}
+                <div class="flex items-center justify-end">
+                    <button type="button" @click="$dispatch('slideout-close');" class="btn btn--color-tertiary-outline btn--size-md mr-2">
+                        Cancel
+                    </button>
+                    <button id="{{ form.vars.id }}_submit" class="btn btn--size-md slideout__submit-button" type="submit">{{ flow.metadata.buttonLabel|default('submit') }}</button>
+                </div>
+            {% endif %}
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>

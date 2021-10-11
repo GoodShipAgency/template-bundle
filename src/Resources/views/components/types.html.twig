@@ -1,0 +1,79 @@
+{% macro date(date, opts) %}{% apply spaceless %}
+    {% if date is empty %}
+        {% if opts.empty is defined and opts.empty is not empty %}{{ opts.empty }}{% endif %}
+    {% else %}
+        <time datetime="{{ date|date('Y-m-d') }}">{{ date|date(opts.format|default('F jS Y')) }}</time>
+    {% endif %}
+{% endapply %}{% endmacro %}
+
+{% macro datetime(date, opts) %}
+    {% if date is empty %}
+        {% if opts.empty is defined and opts.empty is not empty %}{{ opts.empty }}{% endif %}
+    {% else %}
+        <time datetime="{{ date|date('Y-m-d H:i:s') }}">{{ date|date(opts.format|default('F jS Y \\a\\t H:i')) }}</time>
+    {% endif %}
+{% endmacro %}
+
+{% macro money(money, opts) %}
+    {% if money is empty %}
+        {% if opts.empty is defined and opts.empty is not empty %}{{ opts.empty }}{% endif %}
+    {% else %}
+        {{ "%.2f"|format(money.amount / 100)|format_currency(money.currency.code) }}
+    {% endif %}
+{% endmacro %}
+
+{% macro moneyWholePart(money) %}
+    {{ _self.money(money)|split('.')[0] }}
+{% endmacro %}
+
+{% macro moneyDecimalPart(money) %}
+    {{ _self.money(money)|split('.')[1] }}
+{% endmacro %}
+
+{% macro nullable(value, opts) %}
+    {% if value is empty %}
+        {% if opts.empty is defined and opts.empty is not empty %}{{ opts.empty }}{% endif %}
+    {% else %}
+        {{ value }}
+    {% endif %}
+{% endmacro %}
+
+{% macro telephone(value, opts) %}
+    {% if value is empty %}
+        {% if opts.empty is defined and opts.empty is not empty %}{{ opts.empty }}{% endif %}
+    {% else %}
+        <a href="tel:{{ value }}">{{ value }}</a>
+    {% endif %}
+{% endmacro %}
+
+{% macro email(value, opts) %}
+    {% if value is empty %}
+        {% if opts.empty is defined and opts.empty is not empty %}{{ opts.empty }}{% endif %}
+    {% else %}
+        <a href="mailto:{{ value }}">{{ value }}</a>
+    {% endif %}
+{% endmacro %}
+
+{#
+    Options
+    true: string | default: 'True'
+    false: string | default: 'False'
+#}
+{% macro boolean(value, opts) %}
+    {% if (value is empty) and (value != false) %}
+        {% if opts.empty is defined and opts.empty is not empty %}{{ opts.empty }}{% endif %}
+    {% else %}
+        {{ value ? (opts.true is defined ? opts.true : 'True') : (opts.false is defined ? opts.false : 'False') }}
+    {% endif %}
+{% endmacro %}
+
+{% macro progress(value, opts) %}
+    <div class="progress-bar">
+        <div class="progress-bar__bar">
+            <div
+                    class="progress-bar__progress"
+                    style="width: {{ value }}%"
+            ></div>
+        </div>
+    </div>
+{% endmacro %}

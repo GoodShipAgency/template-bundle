@@ -1,6 +1,6 @@
 <?php
 
-namespace Mashbo\CommonBundle;
+namespace Mashbo\AdminBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

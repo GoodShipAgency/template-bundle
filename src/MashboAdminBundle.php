@@ -1,10 +1,10 @@
 <?php
 
-namespace Mashbo\AdminBundle;
+namespace Mashbo\TemplateBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class MashboAdminBundle extends Bundle
+class MashboTemplateBundle extends Bundle
 {
 
 }

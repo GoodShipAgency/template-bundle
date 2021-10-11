@@ -1,6 +1,6 @@
 {
-    "name": "mashbo/admin-bundle",
-    "description": "Mashbo Admin Bundle is a collection of resources which can be used to create an admin interface.",
+    "name": "mashbo/template-bundle",
+    "description": "Mashbo Template Bundle is a collection of resources which can be used to create user interfaces.",
     "type": "symfony-bundle",
     "require": {
         "php": "^8.0",
@@ -8,7 +8,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Mashbo\\AdminBundle\\": "src/"
+            "Mashbo\\TemplateBundle\\": "src/"
         }
     },
     "minimum-stability": "stable"

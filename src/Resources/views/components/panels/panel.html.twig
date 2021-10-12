@@ -1,0 +1,21 @@
+<div class="mt-5 lg:mt-0 lg:col-span-9">
+    {% block panel_before %}{% endblock %}
+
+    <div class="shadow sm:rounded-md sm:overflow-hidden">
+        <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
+            {% block panel_contents %}{% endblock %}
+        </div>
+
+        {% set footer %}
+            {% block panel_footer %}{% endblock %}
+        {% endset %}
+
+        {% if footer|trim is not empty %}
+            <div class="px-4 py-3 bg-gray-50 flex justify-between items-center">
+                {{ footer }}
+            </div>
+        {% endif %}
+    </div>
+
+    {% block panel_after %}{% endblock %}
+</div>

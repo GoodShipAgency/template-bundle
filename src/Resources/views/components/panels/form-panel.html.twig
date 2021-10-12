@@ -1,0 +1,42 @@
+{% extends "components/panels/panel.html.twig" %}
+{% form_theme form '@MashboTemplate/tailwind_layout.html.twig' %}
+
+{% block panel_before %}
+    {% block form_start %}
+        {{ form_start(form) }}
+    {% endblock %}
+{% endblock %}
+
+{% set submit %}
+    {% block submit_button %}
+        {{ form_widget(form.submit, {'attr': {'class': 'btn btn--size-md btn--color-primary'}}) }}
+    {% endblock %}
+{% endset %}
+
+{% block panel_contents %}
+    {% if success is defined and success == true %}
+        <div class="p-4">
+            {% include "components/alerts/success.html.twig" with {'message': 'Form successfully sent'} %}
+        </div>
+    {% endif %}
+
+    {% block before_form %}{% endblock %}
+
+    <div class="grid grid-cols-6 gap-6">
+        {% block form_rest %}
+            {{ form_rest(form) }}
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block panel_footer %}
+    {% block submit_bar_extra_label %}{% endblock %}
+
+    {{ submit }}
+{% endblock %}
+
+{% block panel_after %}
+    {% block form_end %}
+        {{ form_end(form) }}
+    {% endblock %}
+{% endblock %}

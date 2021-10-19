@@ -1,0 +1,203 @@
+{#
+    Blocks
+        actions
+        primary_url
+        list_item_value - override td value
+        mobile_list_item_value - override list_item_value
+        heading_value - override th value
+        heading_cell_class - extra class names to go on th tags
+        body_cell_class - extra class names to go on the td tags
+
+    Options
+        items
+        headings
+        properties
+        pagination
+        noAction - remove the action column
+        batchSelect - should batch selection be enabled
+        batchSelectProperty - the id or unique identifier for the row
+#}
+
+{# Mobile Layout #}
+<div class="shadow sm:hidden m-list-table">
+    <ul class="divide-y divide-gray-200 shadow sm:hidden m-list-table__container">
+        {% for item in items %}
+            <li>
+                {% set primary_url %}
+                    {{ block('primary_url') is defined ? block('primary_url') : '' }}
+                {% endset %}
+                {% set primary_url = primary_url|trim %}
+                {% if primary_url is not empty %}<a href="{{ primary_url }}" class="block px-4 py-4 bg-white hover:bg-gray-50 m-list-table__primary-url">{% else %}<div class="block px-4 py-4 bg-white">{% endif %}
+                    <span class="flex items-center space-x-4">
+                        <span class="flex-1 flex space-x-2 truncate">
+                            <span class="flex flex-col text-gray-500 text-sm truncate">
+                                {% for property in properties %}
+                                    <span class="truncate">
+                                        {{ headings[loop.index0] is defined and headings[loop.index0] is not empty ? headings[loop.index0] ~ ':' : '' }}
+                                        <span class="font-bold text-gray-700 m-list-table__item">
+                                            {% if block('mobile_list_item_value') is defined %}
+                                                {{ block('mobile_list_item_value') }}
+                                            {% else %}
+                                                 {{ (block('list_item_value') is defined) ? block('list_item_value') : attribute(item, property) }}
+                                            {% endif %}
+                                        </span>
+                                    </span>
+                                {% endfor %}
+
+                                {% set actions %}
+                                    {{ block('actions') is defined ? block('actions') : '' }}
+                                {% endset %}
+
+                                {% if primary_url is empty %}
+                                    {{ actions }}
+                                {% endif %}
+                            </span>
+                        </span>
+                        {% if primary_url is not empty %}
+                            {# Heroicon name: chevron-right #}
+                            <svg class="flex-shrink-0 h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                            </svg>
+                        {% endif %}
+                    </span>
+                {% if primary_url is not empty %}</a>{% else %}</div>{% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% if pagination is defined and pagination is not empty %}
+        <nav class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 m-list-table__pagination" aria-label="Pagination">
+            <div class="flex-1 flex justify-between">
+            {% if pagination.hasPreviousPage() %}
+                <a href="{{ current_path({page: pagination.previousPageNumber() }) }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500">
+                    Previous
+                </a>
+            {% endif %}
+
+            {% if pagination.hasNextPage() %}
+                <a href="{{ current_path({page: pagination.nextPageNumber() }) }}" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:text-gray-500">
+                    Next
+                </a>
+            {% endif %}
+            </div>
+        </nav>
+    {% endif %}
+</div>
+
+{# Desktop Layout #}
+<div class="hidden sm:block list-table">
+    <div class="flex flex-col">
+        <div class="align-middle min-w-full overflow-x-auto shadow sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200 list-table__table">
+
+                {% if headings is defined and headings|length > 0 %}
+                    <thead>
+                        <tr>
+                            {% if batchSelect is defined and batchSelect == true %}
+                                <th class="px-6 py-2 border-b border-gray-200 bg-gray-50 batch-select-cell text-left list-table__th-batch">
+                                    <label class="sr-only" for="batchSelectAll">Batch select row</label>
+                                    <input
+                                        type="checkbox"
+                                        id="batchSelectAll"
+                                        name="batchSelectAll"
+                                    />
+                                </th>
+                            {% endif %}
+
+                            {% for heading in headings %}
+                                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider list-table__th {{ ((block('heading_cell_class') is defined) ? block('heading_cell_class') : '')|trim }}">
+                                    {{ (block('heading_value') is defined) ? block('heading_value') : heading }}
+                                </th>
+                            {% endfor %}
+
+                            {% if noAction is not defined or noAction == false %}
+                                <th class="pr-6 py-3 border-b border-gray-200 bg-gray-50 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                {% endif %}
+
+                <tbody class="bg-white divide-y divide-gray-200 list-table__body {{ [itemsType|default(null), 'items']|join('-')|trim('-') }}">
+
+                    {% for item in items %}
+                        <tr class="item bg-white list-table__row">
+                            {% if batchSelect is defined and batchSelect == true and batchSelectProperty is defined %}
+                                <td class="px-6 py-4 whitespace-no-wrap text-sm text-gray-500 batch-select-cell list-table__item-batch">
+                                    <label class="sr-only" for="table-row-{{ attribute(item, batchSelectProperty) }}">Batch select row</label>
+                                    <input
+                                        type="checkbox"
+                                        id="table-row-{{ attribute(item, batchSelectProperty) }}"
+                                        name="table-row-{{ attribute(item, batchSelectProperty) }}"
+                                    />
+                                </td>
+                            {% endif %}
+
+                            {% for property in properties %}
+                                <td class="px-6 py-4 whitespace-no-wrap text-sm text-gray-500 list-table__item {{ ((block('body_cell_class') is defined) ? block('body_cell_class') : '')|trim }}">
+                                    {% set primary_url %}
+                                        {{ block('primary_url') is defined ? block('primary_url') : '' }}
+                                    {% endset %}
+
+                                    {% set primary_url = primary_url|trim %}
+
+                                    {% if loop.index0 == 0 and primary_url is not empty %}
+                                        <a href="{{ primary_url }}" class="primary-link link--primary rounded-sm">{{ (block('list_item_value') is defined) ? block('list_item_value') : attribute(item, property) }}</a>
+                                    {% else %}
+                                        {{ (block('list_item_value') is defined) ? block('list_item_value') : attribute(item, property) }}
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+
+                            {% if noAction is not defined or noAction == false %}
+                                <td class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
+                                    {% set actions %}
+                                        {{ block('actions') is defined ? block('actions') : '' }}
+                                    {% endset %}
+
+                                    {{ actions }}
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% else %}
+                        <tr><td class="px-6 p-4 bg-gray-100 text-gray-700 list-table__no-results" colspan="{{ headings|length }}">No Results Found</td></tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
+            {% if pagination is defined and pagination is not empty %}
+                <nav class="pagination bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 list-table__pagination" aria-label="Pagination">
+                    <div class="hidden sm:block">
+                        <p class="pagination__summary text-sm text-gray-700">
+                            Showing
+                            <span class="font-medium">{{ pagination.firstResultNumber() }}</span>
+                            to
+                            <span class="font-medium">{{ pagination.lastResultNumber() }}</span>
+                            of
+                            <span class="font-medium">{{ pagination.totalResults() }}</span>
+                            results
+                        </p>
+                    </div>
+                    <div class="flex-1 flex justify-between sm:justify-end">
+                        {% if pagination.hasPreviousPage() %}
+                            <a href="{{ current_path({page: pagination.previousPageNumber() }) }}" class="pagination__previous_btn relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                Previous
+                            </a>
+                        {% endif %}
+                        {% if pagination.hasNextPage() %}
+                            <a href="{{ current_path({page: pagination.nextPageNumber() }) }}" class="pagination__next_btn ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                                Next
+                            </a>
+                        {% endif %}
+                    </div>
+                </nav>
+            {% endif %}
+
+            {% if items|length > 0 and pagination is not defined %}
+                <div class="bg-white border-t">
+                    <p class="p-4 text-right text-sm">Showing <b>{{ items|length }}</b> Results</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

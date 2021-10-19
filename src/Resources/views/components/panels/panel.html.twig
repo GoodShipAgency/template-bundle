@@ -1,15 +1,15 @@
 {#
-    blocks:
-        primary_actions: This can be anything
-        secondary_actions: This will be shown in a dropout menu via the three vertical dots.
-        panel_contents: contents of panel
-        panel_before: comes before white background, normally used for to start a form
-        panel_after: comes after white background
-        panel_footer
+blocks:
+    primary_actions: This can be anything
+    secondary_actions: This will be shown in a dropout menu via the three vertical dots.
+    panel_contents: contents of panel
+    panel_before: comes before white background, normally used for to start a form
+    panel_after: comes after white background
+    panel_footer
 
-    args:
-        title: optional title
-        subtitle: optional subtitle
+args:
+    title: optional title
+    subtitle: optional subtitle
 #}
 {% set primary_actions %}
     {% block primary_actions %}{% endblock %}
@@ -27,35 +27,33 @@
     {% block panel_footer %}{% endblock %}
 {% endset %}
 
-<div class="mb-8 lg:col-span-9">
+<div class="mb-8 lg:col-span-9 panel">
     {% block panel_before %}{% endblock %}
-
-    <div class="shadow sm:rounded-md sm:overflow-hidden">
-        <div class="py-5 sm:py-6 bg-white space-y-6">
-
+    <div class="shadow sm:rounded-md sm:overflow-hidden panel__inner-container">
+        <div class="py-5 sm:py-6 space-y-6 bg-white panel__main">
             {% if (title|default(false)) or (subtitle|default(false)) %}
                 <div class="px-4 sm:px-6 flex flex-wrap sm:flex-nowrap items-center {{ panel_contents|trim is not empty ? "pb-5 border-b border-gray-200" : null }} ">
-                    <div class="flex-grow items-center">
+                    <div class="flex-grow items-center panel__header">
                         {% if title|default(false) %}
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">
+                            <h3 class="text-lg leading-6 font-medium text-gray-900 panel__title">
                                 {{ title }}
                             </h3>
                         {% endif %}
 
                         {% if subtitle|default(false) %}
-                            <p class="mt-1 max-w-2xl text-sm leading-5 text-gray-500">
+                            <p class="mt-1 max-w-2xl text-sm leading-5 text-gray-500 panel__subtitle">
                                 {{ subtitle }}
                             </p>
                         {% endif %}
                     </div>
 
-                    <div class="flex sm:pl-4 justify-end items-center order-1 sm:order-2 w-full sm:w-auto">
+                    <div class="flex sm:pl-4 justify-end items-center order-1 sm:order-2 w-full sm:w-auto panel__actions">
                         {% if primary_actions|trim is not empty %}
-                            <span class="mt-2 sm:mt-0">{{ primary_actions }}</span>
+                            <div class="mt-2 sm:mt-0 panel__primary-actions">{{ primary_actions }}</div>
                         {% endif %}
 
                         {% if secondary_actions|trim is not empty %}
-                            {% embed 'components/overlays/dropout-menu.html.twig' %}
+                            {% embed '@MashboTemplate/components/overlays/dropout-menu.html.twig' %}
                                 {% block content %}
                                     {{ secondary_actions }}
                                 {% endblock %}
@@ -66,14 +64,14 @@
             {% endif %}
 
             {% if panel_contents|trim is not empty %}
-                <div class="px-4 sm:px-6">
+                <div class="px-4 sm:px-6 panel__content-area">
                     {{ panel_contents }}
                 </div>
             {% endif %}
         </div>
 
         {% if footer|trim is not empty %}
-            <div class="py-3 px-4 sm:px-6 bg-gray-50 flex justify-between items-center">
+            <div class="py-3 px-4 sm:px-6 bg-gray-50 flex justify-between items-center panel__footer">
                 {{ footer }}
             </div>
         {% endif %}

@@ -3,7 +3,7 @@ Options
     links
 #}
 
-<div class="hidden lg:block py-6 px-2 sm:px-6 lg:py-0 lg:px-0 lg:col-span-3">
+<div class="hidden lg:block py-6 px-2 sm:px-6 lg:py-0 lg:px-0 lg:col-span-3 content-sidebar-nav">
     <nav class="space-y-1">
         {% for link in links %}
             {% set active = link.path == app.request.pathInfo() %}
@@ -11,10 +11,10 @@ Options
             {% if link.granted %}
                 <a
                     href="{{ link.path }}"
-                    class="content-sidebar__item {{ active ? "content-sidebar__item--active" : null }} group"
+                    class="rounded-md px-3 py-2 flex items-center text-sm leading-5 font-medium text-gray-900 hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:text-gray-900 focus:bg-gray-50 transition ease-in-out duration-150 group content-sidebar-nav__item {{ active ? "bg-gray-50 content-sidebar-nav__item--active" : null }}"
                     {% if active %}aria-current="page"{% endif %}
                 >
-                    <svg class="content-sidebar__item-icon {{ active ? "group-hover:text-lightBlue-500 group-focus:text-lightBlue-600" : "group-hover:text-gray-500 group-focus:text-gray-500" }}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <svg class="group-hover:text-gray-500 group-focus:text-gray-500 content-sidebar-nav__item-icon {{ active ? "content-sidebar-nav__item-icon--active" : null }}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ link.icon }}" />
                     </svg>
                     <span class="truncate">
@@ -56,7 +56,7 @@ Options
                 </span>
             </button>
 
-            <div x-show="showDropdown" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute mt-1 w-full rounded-md bg-white shadow-lg">
+            <div x-show="showDropdown" x-transition:leave="transition ease-in duration-100" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="absolute mt-1 w-full rounded-md bg-white shadow-lg z-10">
                 <ul x-ref="listbox" tabindex="-1" role="listbox" aria-labelledby="listbox-label" class="max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                     {% for link in links %}
                         {% if link.granted %}

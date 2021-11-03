@@ -7,6 +7,7 @@ options:
     path | required | the hx-get path.
     button
         label | The content of the button
+    fetchFresh | if true, makes sure the slideout is fetched fresh every time the button is clicked
 #}
 <div x-data="window.overlayButton('modal', $el)" class="{{ containerClass|default('inline-block') }}">
     <a
@@ -15,6 +16,7 @@ options:
         href="{{ path }}"
         data-target="#modal-content"
         @click="open($dispatch, $event)"
+        {% if fetchFresh|default(false) %}data-fetch-fresh="true"{% endif %}
     >
         {{ button.label|default('Open') }}
     </a>

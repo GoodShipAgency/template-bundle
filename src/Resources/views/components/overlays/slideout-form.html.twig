@@ -46,7 +46,7 @@ options
     <div class="py-6 space-y-6 sm:py-0 sm:space-y-0 w-full h-full flex flex-col slideout__content">
         {% if success is defined and success == true %}
             <div class="p-4">
-                {% include "components/alerts/success.html.twig" with {'message': 'Form successfully sent'} %}
+                {% include "@MashboTemplate/components/alerts/alert.html.twig" with {'message': 'Form successfully sent', 'alertType': 'success'} %}
             </div>
         {% endif %}
 

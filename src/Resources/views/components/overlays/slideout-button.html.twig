@@ -9,6 +9,7 @@ options:
         label | required | The content of the button
         abbr | If an abbreviation is required
     confirmationDialog | details below
+    fetchFresh | if true, makes sure the slideout is fetched fresh every time the button is clicked
 #}
 
 <div x-data="window.overlayButton('slideout', $el)" class="{{ containerClass|default('inline') }}">
@@ -18,6 +19,7 @@ options:
         href="{{ path }}"
         data-target="#slideout-content"
         @click="{{ confirmationDialog is defined ? "openConfirmation($event)" : "open($dispatch, $event)" }}"
+        {% if fetchFresh|default(false) %}data-fetch-fresh="true"{% endif %}
     >
         {% if button.abbr is defined and button.abbr|trim is not empty %}<abbr title="{{button.abbr}}">{% endif %}
             {{ button.label|default(flow.metadata.title)}}

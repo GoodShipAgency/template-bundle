@@ -22,7 +22,7 @@
 <div class="shadow sm:hidden m-list-table">
     <ul class="divide-y divide-gray-200 shadow sm:hidden m-list-table__container">
         {% for item in items %}
-            <li>
+            <li class="{{ block('list_row_class') is defined ? block('list_row_class') : '' }}">
                 {% set primary_url %}
                     {{ block('primary_url') is defined ? block('primary_url') : '' }}
                 {% endset %}
@@ -120,7 +120,7 @@
                 <tbody class="bg-white divide-y divide-gray-200 list-table__body {{ [itemsType|default(null), 'items']|join('-')|trim('-') }}">
 
                     {% for item in items %}
-                        <tr class="item bg-white list-table__row">
+                        <tr class="item bg-white list-table__row {{ block('list_row_class') is defined ? block('list_row_class') : '' }}">
                             {% if batchSelect is defined and batchSelect == true and batchSelectProperty is defined %}
                                 <td class="px-6 py-4 whitespace-no-wrap text-sm text-gray-500 batch-select-cell list-table__item-batch">
                                     <label class="sr-only" for="table-row-{{ attribute(item, batchSelectProperty) }}">Batch select row</label>

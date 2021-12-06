@@ -62,6 +62,8 @@ options
                         '@htmx:after-on-load': 'htmxDispatch({
                             name: "'~form.vars.name~'",
                         })',
+                        '@htmx:before-request': 'document.body.querySelector("button#'~form.vars.id~'_submit").disabled = true',
+                        '@htmx:after-request': 'document.body.querySelector("button#'~form.vars.id~'_submit").disabled = false',
                         'hx-encoding': 'multipart/form-data'
                     }
                     | merge(form_attr|default({}))

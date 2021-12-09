@@ -1,16 +1,5 @@
 {% use "form_div_layout.html.twig" %}
 
-{% block pdv_pricing_row %}
-    <div
-        class="col-span-6"
-        x-data="{ tabActive: false }"
-        x-on:fees-tab-changed.window="tabActive = $event.detail.activeTab.id === '{{- row_attr.id -}}'"
-        x-show="tabActive"
-    >
-        {{ block('form_row') }}
-    </div>
-{% endblock %}
-
 {% block money_range_widget %}
     <div class="grid grid-cols-6 gap-2">
         {{ form_row(form.min) }}
@@ -101,7 +90,6 @@
 {%- endblock button_widget %}
 
 {%- block form_widget_simple -%}
-{#    {{ dump(form.vars) }}#}
     {%- set type = type|default('text') -%}
     {%- if type == 'range' or type == 'color' -%}
         {# Attribute "required" is not supported #}
@@ -112,7 +100,7 @@
         type="{{ type }}"
         id="{{ id }}"
         name="{{ full_name }}"
-        class="{{ block('input_class') }}"
+        class="{{- block('input_class') -}}"
         {{ block('widget_attributes') }}
         {% if value is not empty %}value="{{ value }}" {% endif %}
         {% if required is defined and required %}required {% endif %}
@@ -129,9 +117,13 @@
 {%- endblock form_label %}
 
 {% block form_row -%}
-     {% if row_attr and row_attr.class %}
+    {% if row_attr and row_attr.class %}
         {# appends our form group class to the row_attr.class property #}
-        {%- set row_attr = row_attr|merge({'class': block('form_group_class') ~ row_attr.class }) -%}
+        {% if overrideRowClass is defined and overrideRowClass == true %}
+            {%- set row_attr = row_attr|merge({'class': row_attr.class }) -%}
+        {% else %}
+            {%- set row_attr = row_attr|merge({'class': block('form_group_class') ~ row_attr.class }) -%}
+        {% endif %}
     {% else %}
         {%- set row_attr = {'class': block('form_group_class')} -%}
     {% endif %}
@@ -145,7 +137,6 @@
         {{- form_label(form) -}}
         {{- form_widget(form, widget_attr) -}}
         {{- form_help(form) -}}
-
         {{ form_errors(form) }}
     </div>
 {%- endblock form_row %}
@@ -167,6 +158,12 @@
 {% endblock form_label_class -%}
 
 {% block input_class -%}
+    {% if attr.class is defined %}
+        {% set class = attr.class %}
+    {% endif %}
+
+    {{ class|default('') }}
+
     {% if form.vars.errors|length %}border-red-500 border-1{% endif %}
 {% endblock input_class -%}
 

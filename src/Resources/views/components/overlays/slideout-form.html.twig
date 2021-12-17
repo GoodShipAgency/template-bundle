@@ -78,7 +78,7 @@ options
                     <button type="button" @click="$dispatch('slideout-close');" class="btn btn--color-tertiary-outline btn--size-md mr-2">
                         Cancel
                     </button>
-                    <button id="{{ form.vars.id }}_submit" class="btn btn--size-md slideout__submit-button" type="submit">{{ flow.metadata.buttonLabel|default('submit') }}</button>
+                    <button id="{{ form.vars.id }}_submit" class="btn btn--size-md slideout__submit-button" type="submit">{{ flow.metadata.buttonLabel|default('Submit') }}</button>
                 </div>
             {% endif %}
             {{ form_end(form) }}

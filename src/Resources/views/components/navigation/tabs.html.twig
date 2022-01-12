@@ -30,16 +30,19 @@
 
     <div class="mt-6">
         {# Dropdown menu on small screens #}
-        <div class="mt-1 relative w-full sm:w-64 sm:hidden tabs-nav__dropdown" x-data="{ showDropdown: false }">
-            <button
-                type="button"
-                x-ref="button"
-                @click="showDropdown = true"
-                aria-haspopup="listbox"
-                :aria-expanded="showDropdown"
-                aria-labelledby="listbox-label"
-                class="{{ dropdownButtonClass }} tabs-nav__dropdown-button"
-                aria-expanded="true"
+        <div class="mt-1 relative w-full sm:w-64 sm:hidden tabs-nav__dropdown"
+             x-data="{ showDropdown: false }"
+             @click.outside="showDropdown = false"
+             x-cloak
+        >
+            <button type="button"
+                    x-ref="button"
+                    @click="showDropdown = true"
+                    aria-haspopup="listbox"
+                    :aria-expanded="showDropdown"
+                    aria-labelledby="listbox-label"
+                    class="{{ dropdownButtonClass }} tabs-nav__dropdown-button"
+                    aria-expanded="true"
             >
                 <span class="w-full inline-flex truncate">
                     <span class="truncate">
@@ -57,29 +60,26 @@
                 </span>
             </button>
 
-            <div
-                class="absolute mt-1 w-full rounded-md bg-white shadow-lg"
-                x-show="showDropdown"
-                @click.outside="showDropdown = false"
-                x-transition:leave="transition ease-in duration-100"
-                x-transition:leave-start="opacity-100"
-                x-transition:leave-end="opacity-0"
+            <div class="absolute mt-1 w-full rounded-md bg-white shadow-lg z-10"
+                 x-show="showDropdown"
+                 x-transition:leave="transition ease-in duration-100"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
             >
                 <ul x-ref="listbox" tabindex="-1" role="listbox" aria-labelledby="listbox-label" class="max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
                     {% if useHtmx is defined and useHtmx == true %}
-                         {% for tab in tabs %}
+                        {% for tab in tabs %}
                             <li id="listbox-item-{{ loop.index }}" role="option" class="cursor-default select-none relative text-gray-900 capitalize">
                                 {% if tab.path == app.request.pathInfo() %}
-                                    <span class="truncate py-2 px-3 w-full block bg-gray-50">{{ tab.name }}</span>
+                                    <span class="truncate py-2 px-3 w-full block bg-gray-100">{{ tab.name }}</span>
                                 {% else %}
-                                    <button
-                                        class="font-normal truncate py-2 px-3 w-full block text-left"
-                                        type="button"
-                                        hx-trigger="click"
-                                        hx-get="{{ tab.path }}"
-                                        hx-target="#slideout-content"
-                                        hx-swap="innerHTML"
-                                        @click="slideoutOpen = true"
+                                    <button class="font-normal truncate py-2 px-3 w-full block text-left hover:bg-gray-50 transition-colors"
+                                            type="button"
+                                            hx-trigger="click"
+                                            hx-get="{{ tab.path }}"
+                                            hx-target="#slideout-content"
+                                            hx-swap="innerHTML"
+                                            @click="slideoutOpen = true"
                                     >{{ tab.name }}</button>
                                 {% endif %}
                             </li>
@@ -88,12 +88,11 @@
                         {% for tab in tabs %}
                             <li id="listbox-item-{{ loop.index }}" role="option" class="cursor-default select-none relative text-gray-900 capitalize">
                                 {% if tab.path == app.request.pathInfo() %}
-                                    <span class="truncate py-2 px-3 w-full block bg-gray-50">{{ tab.name }}</span>
+                                    <span class="truncate py-2 px-3 w-full block bg-gray-100">{{ tab.name }}</span>
                                 {% else %}
-                                    <button
-                                        class="font-normal truncate py-2 px-3 w-full block text-left"
-                                        type="button"
-                                        @click="{{ tab.callback }}"
+                                    <button class="font-normal truncate py-2 px-3 w-full block text-left hover:bg-gray-50 transition-colors"
+                                            type="button"
+                                            @click="{{ tab.callback }}"
                                     >{{ tab.name }}</button>
                                 {% endif %}
                             </li>
@@ -102,9 +101,11 @@
                         {% for tab in tabs %}
                             <li id="listbox-item-{{ loop.index }}" role="option" class="cursor-default select-none relative text-gray-900 capitalize">
                                 {% if tab.path == app.request.pathInfo() %}
-                                    <span class="truncate py-2 px-3 w-full block bg-gray-50">{{ tab.name }}</span>
+                                    <span class="truncate py-2 px-3 w-full block bg-gray-100">{{ tab.name }}</span>
                                 {% else %}
-                                    <a href="{{ tab.path }}" class="font-normal truncate py-2 px-3 w-full block">{{ tab.name }}</a>
+                                    <a href="{{ tab.path }}" class="font-normal truncate py-2 px-3 w-full block hover:bg-gray-50 transition-colors">
+                                        {{ tab.name }}
+                                    </a>
                                 {% endif %}
                             </li>
                         {% endfor %}
@@ -123,14 +124,13 @@
                                 {{ tab.name }}
                             </span>
                         {% else %}
-                            <button
-                                class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm tabs-nav__tab"
-                                type="button"
-                                hx-trigger="click"
-                                hx-get="{{ tab.path }}"
-                                hx-target="#slideout-content"
-                                hx-swap="innerHTML"
-                                @click="slideoutOpen = true"
+                            <button class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm tabs-nav__tab"
+                                    type="button"
+                                    hx-trigger="click"
+                                    hx-get="{{ tab.path }}"
+                                    hx-target="#slideout-content"
+                                    hx-swap="innerHTML"
+                                    @click="slideoutOpen = true"
                             >
                                 {{ tab.name }}
                             </button>
@@ -143,10 +143,9 @@
                                 {{ tab.name }}
                             </span>
                         {% else %}
-                            <button
-                                class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm tabs-nav__tab"
-                                type="button"
-                                @click="{{ tab.callback }}"
+                            <button class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm tabs-nav__tab"
+                                    type="button"
+                                    @click="{{ tab.callback }}"
                             >
                                 {{ tab.name }}
                             </button>

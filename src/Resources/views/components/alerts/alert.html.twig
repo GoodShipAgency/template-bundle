@@ -20,7 +20,7 @@ blocks
     {% endif %}
 {% endset %}
 
-{% if (messages is defined and messages|length > 0) or (message is defined) or (block('message_block') is defined) %}
+{% if (messages is defined and messages|length > 0) or (message is defined) or (block('message_block')|trim is not empty) %}
     <div class="rounded-md p-4 m-4 {{ classes }}" role="alert">
         <div class="flex">
             <div class="flex-shrink-0">
@@ -49,7 +49,9 @@ blocks
                 {% endblock %}
             </div>
             <div class="ml-3">
-                {% block message_block %}
+                {% if block('message_block')|trim is not empty %}
+                    {% block message_block %}{% endblock %}
+                {% else %}
                     <h3 class="text-sm font-medium">
                         {% if message is defined %}
                             {# If error is singular #}
@@ -69,7 +71,7 @@ blocks
                             </ul>
                         </div>
                     {% endif %}
-                {% endblock %}
+                {% endif %}
             </div>
         </div>
     </div>

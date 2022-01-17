@@ -25,22 +25,20 @@ blocks
 {% set links %}
     {% block links %}
         {% for link in links %}
-            {% if link.granted|default(true) %}
-                {% if link.path == app.request.pathInfo() or (link.path in app.request.pathInfo() and link.path != (dashboardPath|default('/'))) %}
-                    <a href="{{ link.path }}" class="{{ navItemClass }} side-nav__item--active">
-                        <svg class="{{ navItemIconClass }} side-nav__item-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            {{ link.icon|raw }}
-                        </svg>
-                        {{ link.name }}
-                    </a>
-                {% else %}
-                    <a href="{{ link.path }}" class="{{ navItemClass }} side-nav__item">
-                        <svg class="{{ navItemIconClass }} side-nav__item-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            {{ link.icon|raw }}
-                        </svg>
-                        {{ link.name }}
-                    </a>
-                {% endif %}
+            {% if link.path == app.request.pathInfo() or (link.path in app.request.pathInfo() and link.path != (dashboardPath|default('/'))) %}
+                <a href="{{ link.path }}" class="{{ navItemClass }} side-nav__item--active">
+                    <svg class="{{ navItemIconClass }} side-nav__item-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        {{ link.icon|raw }}
+                    </svg>
+                    {{ link.name }}
+                </a>
+            {% else %}
+                <a href="{{ link.path }}" class="{{ navItemClass }} side-nav__item">
+                    <svg class="{{ navItemIconClass }} side-nav__item-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        {{ link.icon|raw }}
+                    </svg>
+                    {{ link.name }}
+                </a>
             {% endif %}
         {% endfor %}
     {% endblock %}

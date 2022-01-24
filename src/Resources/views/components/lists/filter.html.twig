@@ -40,10 +40,10 @@
                     <div class="js-filters-allow-clicks">
                         <div class="text-sm bg-white shadow-lg py-2 rounded-lg overflow-y-scroll max-h-80 filters__tabs-container">
                             <div class="flex flex-col" x-ref="tabsContainer">
-                                {% for child in form.children|sort((a, b) => (a.vars.label|default(a.vars.name))|humanize <=> (b.vars.label|default(b.vars.name))|humanize) %}
+                                {% for child in form.children|sort((a, b) => (a.vars.label|default(a.vars.name|humanize)) <=> (b.vars.label|default(b.vars.name|humanize))) %}
                                     {% if (not (child.vars.id ends with '__token')) and (not (child.vars.id ends with '_submit')) %}
                                         <button class="py-2 px-4 text-left hover:bg-gray-100 transition-colors rounded filters__tab" type="button" value="{{ child.vars.id }}" @click="filtersTabClick($event)">
-                                            {{ (child.vars.label|default(child.vars.name))|humanize }}
+                                            {{ (child.vars.label|default(child.vars.name|humanize)) }}
                                             {% if child.vars.errors|length > 0 %}
                                                 <span class="pointer-events-none text-yellow-400">
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline" viewBox="0 0 20 20" fill="currentColor">

@@ -82,12 +82,12 @@
         {% if filters|length > 0 %}
             <div class="active-filters flex flex-wrap">
                 {% for filter in filters %}
-                    <div class="p-3 bg-gray-200 rounded text-sm text-gray-600 flex items-center mr-2 mb-2 filters__active-tab" data-row-id="{{ form.vars.name }}_{{ filterKey(filter) }}_tab">
+                    <div class="p-3 bg-gray-200 rounded text-sm text-gray-600 flex items-center mr-2 mb-2 filters__active-tab" data-row-id="{{ filterKey(filter) }}_tab">
                         <p><span>{{ filterLabel(filter) }}: </span><b>{{ filterValue(filter) }}</b></p>
                         <button
                             class=" ml-2 rounded-full focus-ring hover:ring-1 hover:ring-black filters__active-tab-button js-filter--remove"
                             type="button"
-                            data-row-id="{{ form.vars.name }}_{{ filterKey(filter) }}"
+                            data-row-id="{{ filterKey(filter) }}"
                             @click="removeFilter($event)"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">

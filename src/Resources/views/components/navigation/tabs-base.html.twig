@@ -1,0 +1,36 @@
+{% block main %}
+    <div class="relative sm:border-b border-gray-200 tabs-nav">
+        <div>
+            {% block tabs_wrapper_mobile %}
+                <div class="mt-1 relative w-full sm:w-64 sm:hidden tabs-nav__dropdown"
+                     x-data="{ showDropdown: false }"
+                     @click.outside="showDropdown = false"
+                     x-cloak
+                >
+                    {% block active_tab_wrapper_mobile %}{% endblock %}
+
+                    {% block dropout_wrapper_mobile %}
+                        <div class="absolute mt-1 w-full rounded-md bg-white shadow-lg z-10"
+                             x-show="showDropdown"
+                             x-transition:leave="transition ease-in duration-100"
+                             x-transition:leave-start="opacity-100"
+                             x-transition:leave-end="opacity-0"
+                        >
+                            <ul x-ref="listbox" tabindex="-1" role="listbox" aria-labelledby="listbox-label" class="max-h-60 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
+                                {% block tab_wrapper_mobile %}
+                            </ul>
+                        </div>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+
+            {% block tabs_wrapper %}
+                <div class="hidden sm:block">
+                    <nav class="-mb-px flex space-x-8">
+                        {% block tab_wrapper %}{% endblock %}
+                    </nav>
+                </div>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

@@ -13,116 +13,110 @@ Blocks
 #}
 
 {% block main %}
-    <div class="filters">
-        <div x-data="tableWithFilters()">
-            <div class="w-full flex relative">
-                {% block dropdown_button_wrapper %}
-                    <button
-                        class="btn flex items-center space-x-1 text-sm mb-2 font-medium p-2 transition-colors table-search__dropdown-button"
+    <div class="filters" x-data="tableWithFilters()">
+        <div class="w-full flex relative">
+            {% block dropdown_button_wrapper %}
+                <button class="btn flex items-center space-x-1 text-sm mb-2 font-medium p-2 transition-colors table-search__dropdown-button"
                         type="button"
                         @mouseDown="showFilters = !showFilters"
                         @mouseDown.outside="closeFiltersDropout"
                         :class="showFilters && 'text-white bg-gray-700 table-search__dropdown-button--active'"
-                    >
-                        <span>Filters{{ filters|length > 0 ? ' (' ~ filters|length ~ ')' : '' }}</span>
+                >
+                    <span>Filters{{ filters|length > 0 ? ' (' ~ filters|length ~ ')' : '' }}</span>
 
-                        {% if not form.vars.valid %}
-                            <span class="pointer-events-none text-yellow-400 filters__invalid-icon">
-                                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                                      <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                  </svg>
-                            </span>
-                        {% endif %}
+                    {% if not form.vars.valid %}
+                        <span class="pointer-events-none text-yellow-400 filters__invalid-icon">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                              </svg>
+                        </span>
+                    {% endif %}
 
-                        <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                {% endblock %}
+                    <svg class="h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+            {% endblock %}
 
-                {% block dropdown_wrapper %}
-                    <div
-                        x-show="showFilters"
-                        x-transition:enter="transition ease-out duration-100"
-                        x-transition:enter-start="transform opacity-0 scale-95"
-                        x-transition:enter-end="transform opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-75"
-                        x-transition:leave-start="transform opacity-100 scale-100"
-                        x-transition:leave-end="transform opacity-0 scale-95"
-                        class="absolute mt-2 rounded-md origin-top-left left-0 top-full z-10 filters__container js-filters-dropout-container"
-                        x-cloak
-                    >
-                        <div class="flex flex-shrink-0 py-2 rounded space-x-2 items-start">
-                            <div class="js-filters-allow-clicks">
-                                {% block tabs_wrapper %}
-                                    <div class="text-sm bg-white shadow-lg py-2 rounded-lg overflow-y-scroll max-h-80 filters__tabs-container">
-                                        <div class="flex flex-col" x-ref="tabsContainer">
-                                            {% for child in form.children|sort((a, b) => (a.vars.label|default(a.vars.name|humanize)) <=> (b.vars.label|default(b.vars.name|humanize))) %}
-                                                {% if (not (child.vars.id ends with '__token')) and (not (child.vars.id ends with '_submit')) %}
-                                                    <button class="py-2 px-4 text-left hover:bg-gray-100 transition-colors rounded filters__tab" type="button" value="{{ child.vars.id }}" @click="filtersTabClick($event)">
-                                                        {{ (child.vars.label|default(child.vars.name|humanize)) }}
-                                                        {% if child.vars.errors|length > 0 %}
-                                                            <span class="pointer-events-none text-yellow-400">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline" viewBox="0 0 20 20" fill="currentColor">
-                                                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
-                                                                </svg>
-                                                            </span>
-                                                        {% endif %}
-                                                    </button>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
+            {% block dropdown_wrapper %}
+                <div class="absolute mt-2 rounded-md origin-top-left left-0 top-full z-10 filters__container js-filters-dropout-container"
+                     x-show="showFilters"
+                     x-transition:enter="transition ease-out duration-100"
+                     x-transition:enter-start="transform opacity-0 scale-95"
+                     x-transition:enter-end="transform opacity-100 scale-100"
+                     x-transition:leave="transition ease-in duration-75"
+                     x-transition:leave-start="transform opacity-100 scale-100"
+                     x-transition:leave-end="transform opacity-0 scale-95"
+                     x-cloak
+                >
+                    <div class="flex flex-shrink-0 py-2 rounded space-x-2 items-start">
+                        <div class="js-filters-allow-clicks">
+                            {% block tabs_wrapper %}
+                                <div class="text-sm bg-white shadow-lg py-2 rounded-lg overflow-y-scroll max-h-80 filters__tabs-container">
+                                    <div class="flex flex-col" x-ref="tabsContainer">
+                                        {% for child in form.children|sort((a, b) => (a.vars.label|default(a.vars.name|humanize)) <=> (b.vars.label|default(b.vars.name|humanize))) %}
+                                            {% if (not (child.vars.id ends with '__token')) and (not (child.vars.id ends with '_submit')) %}
+                                                <button class="py-2 px-4 text-left hover:bg-gray-100 transition-colors rounded filters__tab" type="button" value="{{ child.vars.id }}" @click="filtersTabClick($event)">
+                                                    {{ (child.vars.label|default(child.vars.name|humanize)) }}
+                                                    {% if child.vars.errors|length > 0 %}
+                                                        <span class="pointer-events-none text-yellow-400">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline" viewBox="0 0 20 20" fill="currentColor">
+                                                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                                                            </svg>
+                                                        </span>
+                                                    {% endif %}
+                                                </button>
+                                            {% endif %}
+                                        {% endfor %}
                                     </div>
-                                {% endblock %}
-                            </div>
+                                </div>
+                            {% endblock %}
+                        </div>
 
-                            <div class="js-filters-allow-clicks">
-                                {% block form_wrapper %}
-                                    <div class="text-sm bg-white shadow-lg p-4 pt-2 min-w-80 rounded-lg">
-                                        {{ form_start(form) }}
-                                        <div class="space-y-2 flex flex-col">
-                                            <div class="flex items-center space-x-2 order-2">
-                                                <button class="btn btn--size-sm btn--color-tertiary-outline filters-form__cancel-button js-filters-dropout__cancel-button" type="button">Cancel</button>
-                                                <button class="btn btn--size-sm-wide btn--color-primary flex-grow filters-form__submit-button js-filters--submit-button" type="submit" id="{{ form.vars.name }}_submit">Apply Filter</button>
-                                            </div>
-
-                                            <div class="filters__fields-container order-1" x-ref="fieldsContainer">
-                                                {{ form_widget(form) }}
-                                            </div>
+                        <div class="js-filters-allow-clicks">
+                            {% block form_wrapper %}
+                                <div class="text-sm bg-white shadow-lg p-4 pt-2 min-w-80 rounded-lg">
+                                    {{ form_start(form) }}
+                                    <div class="space-y-2 flex flex-col">
+                                        <div class="flex items-center space-x-2 order-2">
+                                            <button class="btn btn--size-sm btn--color-tertiary-outline filters-form__cancel-button js-filters-dropout__cancel-button" type="button">Cancel</button>
+                                            <button class="btn btn--size-sm-wide btn--color-primary flex-grow filters-form__submit-button js-filters--submit-button" type="submit" id="{{ form.vars.name }}_submit">Apply Filter</button>
                                         </div>
 
-                                        {{ form_end(form) }}
+                                        <div class="filters__fields-container order-1" x-ref="fieldsContainer">
+                                            {{ form_widget(form) }}
+                                        </div>
                                     </div>
-                                {% endblock %}
-                            </div>
+                                    {{ form_end(form) }}
+                                </div>
+                            {% endblock %}
                         </div>
                     </div>
-                {% endblock %}
-            </div>
+                </div>
+            {% endblock %}
+        </div>
 
-            {% block active_filters_wrapper %}
-                {% if filters|length > 0 %}
-                    <div class="active-filters flex flex-wrap">
-                        {% for filter in filters %}
-                            <div class="p-3 bg-gray-200 rounded text-sm text-gray-600 flex items-center mr-2 mb-2 filters__active-tab" data-row-id="{{ filterKey(filter) }}_tab">
-                                <p><span>{{ filterLabel(filter) }}: </span><b>{{ filterValue(filter) }}</b></p>
-                                <button
-                                    class=" ml-2 rounded-full focus-ring hover:ring-1 hover:ring-black filters__active-tab-button js-filter--remove"
+        {% block active_filters_wrapper %}
+            {% if filters|length > 0 %}
+                <div class="active-filters flex flex-wrap">
+                    {% for filter in filters %}
+                        <div class="p-3 bg-gray-200 rounded text-sm text-gray-600 flex items-center mr-2 mb-2 filters__active-tab" data-row-id="{{ filterKey(filter) }}_tab">
+                            <p><span>{{ filterLabel(filter) }}: </span><b>{{ filterValue(filter) }}</b></p>
+                            <button class=" ml-2 rounded-full focus-ring hover:ring-1 hover:ring-black filters__active-tab-button js-filter--remove"
                                     type="button"
                                     data-row-id="{{ filterKey(filter) }}"
                                     @click="removeFilter($event)"
-                                >
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                    </svg>
-                                </button>
-                            </div>
-                        {% endfor %}
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                    {% endfor %}
 
-                        <button class="link link--primary text-sm mb-2 filters__clear-all-button" type="button" @click="removeAllFilters();">Clear All</button>
-                    </div>
-                {% endif %}
-            {% endblock %}
-        </div>
+                    <button class="link link--primary text-sm mb-2 filters__clear-all-button" type="button" @click="removeAllFilters();">Clear All</button>
+                </div>
+            {% endif %}
+        {% endblock %}
     </div>
 {% endblock %}

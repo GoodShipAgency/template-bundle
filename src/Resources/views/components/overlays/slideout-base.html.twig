@@ -6,36 +6,34 @@ Options
     containerClass | defaults to "w-screen max-w-xl"
 #}
 <div class="slideout-base__outer-container"
-    x-data="window.overlay($el)"
-    @slideout-open.window="open($event)"
-    @slideout-close.window="close($event)"
-    @slideout-toggle.window="toggle($event)"
-    x-cloak
+     x-data="window.overlay($el)"
+     @slideout-open.window="open($event)"
+     @slideout-close.window="close($event)"
+     @slideout-toggle.window="toggle($event)"
+     x-cloak
 >
     {% block outer_content %}{% endblock %}
 
-    <div
-        @keydown.window.escape="close()"
-        x-show="isOpen"
-        x-ref="focusTarget"
-        class="fixed inset-0 overflow-hidden z-50 js-slideout-container slideout-base__container"
-        aria-modal="true"
-        x-trap="isOpen"
+    <div class="fixed inset-0 overflow-hidden z-50 js-slideout-container slideout-base__container"
+         @keydown.window.escape="close()"
+         x-show="isOpen"
+         x-ref="focusTarget"
+         aria-modal="true"
+         x-trap="isOpen"
     >
         <div class="absolute inset-0 overflow-hidden">
             <div x-description="Background overlay, show/hide based on slide-over state." class="absolute inset-0 slideout-base__overlay" @click="isOpen = false" aria-hidden="true"></div>
             <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex sm:pl-16 slideout-base__panel-outer">
-                <div
-                    x-show="isOpen"
-                    x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
-                    x-transition:enter-start="translate-x-full"
-                    x-transition:enter-end="translate-x-0"
-                    x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
-                    x-transition:leave-start="translate-x-0"
-                    x-transition:leave-end="translate-x-full"
-                    class="{{ containerClass|default('w-screen max-w-xl') }} slideout-base__panel"
-                    x-description="Slide-over panel, show/hide based on slide-over state."
-                    tabindex="0"
+                <div x-show="isOpen"
+                     x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
+                     x-transition:enter-start="translate-x-full"
+                     x-transition:enter-end="translate-x-0"
+                     x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
+                     x-transition:leave-start="translate-x-0"
+                     x-transition:leave-end="translate-x-full"
+                     class="{{ containerClass|default('w-screen max-w-xl') }} slideout-base__panel"
+                     x-description="Slide-over panel, show/hide based on slide-over state."
+                     tabindex="0"
                 >
                     <div class="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
                         <div class="flex-1 flex flex-col" id="slideout-content">

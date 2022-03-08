@@ -5,7 +5,7 @@ Blocks
 Options
     containerClass | defaults to "w-screen max-w-xl"
 #}
-<div
+<div class="slideout-base__outer-container"
     x-data="window.overlay($el)"
     @slideout-open.window="open($event)"
     @slideout-close.window="close($event)"
@@ -18,13 +18,13 @@ Options
         @keydown.window.escape="close()"
         x-show="isOpen"
         x-ref="focusTarget"
-        class="fixed inset-0 overflow-hidden z-50 js-slideout-container"
+        class="fixed inset-0 overflow-hidden z-50 js-slideout-container slideout-base__container"
         aria-modal="true"
         x-trap="isOpen"
     >
         <div class="absolute inset-0 overflow-hidden">
-            <div x-description="Background overlay, show/hide based on slide-over state." class="absolute inset-0" @click="isOpen = false" aria-hidden="true"></div>
-            <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex sm:pl-16">
+            <div x-description="Background overlay, show/hide based on slide-over state." class="absolute inset-0 slideout-base__overlay" @click="isOpen = false" aria-hidden="true"></div>
+            <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex sm:pl-16 slideout-base__panel-outer">
                 <div
                     x-show="isOpen"
                     x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"
@@ -33,7 +33,7 @@ Options
                     x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700"
                     x-transition:leave-start="translate-x-0"
                     x-transition:leave-end="translate-x-full"
-                    class="{{ containerClass|default('w-screen max-w-xl') }}"
+                    class="{{ containerClass|default('w-screen max-w-xl') }} slideout-base__panel"
                     x-description="Slide-over panel, show/hide based on slide-over state."
                     tabindex="0"
                 >

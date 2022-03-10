@@ -49,14 +49,14 @@ Blocks
                      x-transition:leave-end="transform opacity-0 scale-95"
                      x-cloak
                 >
-                    <div class="flex flex-shrink-0 py-2 rounded space-x-2 items-start">
-                        <div class="js-filters-allow-clicks">
+                    <div class="flex flex-wrap flex-shrink-0 sm:py-2 rounded sm:space-x-2 items-start shadow bg-white sm:shadow-none sm:flex-nowrap sm:bg-transparent">
+                        <div class="js-filters-allow-clicks w-full sm:w-auto">
                             {% block tabs_wrapper %}
-                                <div class="text-sm bg-white shadow-lg py-2 rounded-lg overflow-y-scroll max-h-80 filters__tabs-container">
-                                    <div class="flex flex-col" x-ref="tabsContainer">
+                                <div class="text-sm border-b border-gray-200 sm:border-b-0 bg-gray-50 sm:bg-white sm:shadow-lg sm:py-2 sm:rounded-lg overflow-y-scroll max-h-32 sm:max-h-80 w-full sm:w-auto filters__tabs-container">
+                                    <div class="flex flex-col divide-y sm:divide-y-0" x-ref="tabsContainer">
                                         {% for child in form.children|sort((a, b) => (a.vars.label|default(a.vars.name|humanize)) <=> (b.vars.label|default(b.vars.name|humanize))) %}
                                             {% if (not (child.vars.id ends with '__token')) and (not (child.vars.id ends with '_submit')) %}
-                                                <button class="py-2 px-4 text-left hover:bg-gray-100 transition-colors rounded filters__tab" type="button" value="{{ child.vars.id }}" @click="filtersTabClick($event)">
+                                                <button class="py-2 px-4 text-left hover:bg-gray-100 transition-colors sm:rounded filters__tab" type="button" value="{{ child.vars.id }}" @click="filtersTabClick($event)">
                                                     {{ (child.vars.label|default(child.vars.name|humanize)) }}
                                                     {% if child.vars.errors|length > 0 %}
                                                         <span class="pointer-events-none text-yellow-400">
@@ -75,7 +75,7 @@ Blocks
 
                         <div class="js-filters-allow-clicks">
                             {% block form_wrapper %}
-                                <div class="text-sm bg-white shadow-lg p-4 pt-2 min-w-80 rounded-lg">
+                                <div class="text-sm bg-white sm:shadow-lg p-4 pt-2 w-full sm:w-auto min-w-80 rounded-lg">
                                     {{ form_start(form) }}
                                     <div class="space-y-2 flex flex-col">
                                         <div class="flex items-center space-x-2 order-2">

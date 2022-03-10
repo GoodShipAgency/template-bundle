@@ -14,7 +14,7 @@ options
 {% endset %}
 
 <div class="flex flex-col flex-1 slideout__container">
-    <!-- Header -->
+    {# Header #}
     <div class="px-4 py-6 sm:px-6 slideout__heading">
         <div class="flex items-start justify-between space-x-3">
             <div class="space-y-1">
@@ -29,10 +29,9 @@ options
             </div>
 
             <div class="h-7 flex items-center">
-                <button
-                    type="button"
-                    class="rounded-md slideout__close-button"
-                    @click="$dispatch('slideout-close')"
+                <button type="button"
+                        class="rounded-md slideout__close-button"
+                        @click="$dispatch('slideout-close')"
                 >
                     <span class="sr-only">Close panel</span>
                     <svg class="h-6 w-6" x-description="Heroicon name: outline/x" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -50,6 +49,10 @@ options
             </div>
         {% endif %}
 
+        <div class="p-4 js-overlay-error-container hidden" data-form-error-id="{{ form.vars.id }}">
+            {% include "@MashboTemplate/components/alerts/alert.html.twig" with {'message': 'An error has occured, please reload and try again.', 'alertType': 'error'} %}
+        </div>
+
         <div class="mx-auto py-6 px-4 max-w-xl w-full">
             {{ form_start(form,
                 {
@@ -64,6 +67,8 @@ options
                         })',
                         '@htmx:before-request': 'document.body.querySelector("button#'~form.vars.id~'_submit").disabled = true',
                         '@htmx:after-request': 'document.body.querySelector("button#'~form.vars.id~'_submit").disabled = false',
+                        '@htmx:response-error': 'responseError($event, "'~form.vars.id~'");',
+                        '@htmx:send-error': 'responseError($event, "'~form.vars.id~'");',
                         'hx-encoding': 'multipart/form-data'
                     }
                     | merge(form_attr|default({}))

@@ -14,7 +14,9 @@ options:
     button
         label | required | The content of the button
         abbr | If an abbreviation is required
+        disabled | whether the button should be disabled (requires a[data-disabled] selector styling)
     confirmationDialog | details below
+    disableOnSuccess | Disable the button on a successful form submission
 #}
 
 {% block main %}
@@ -25,6 +27,8 @@ options:
                href="{{ path }}"
                data-target="#slideout-content"
                @click="{{ confirmationDialog is defined ? "openConfirmation($event)" : "open($dispatch, $event)" }}"
+               data-disabled="{{ button.disabled|default('false') }}"
+               {% if disableOnSuccess|default(false) %}x-disable-on-success="{ flowName: '{{ flow.name }}' }"{% endif %}
             >
                 {% if button.abbr is defined and button.abbr|trim is not empty %}<abbr title="{{button.abbr}}">{% endif %}
                     {{ button.label|default(flow.metadata.title)}}

@@ -7,6 +7,7 @@ options
         title
         subtitle
         buttonLabel
+        successCallback
     form
 #}
 {% set actions %}
@@ -57,20 +58,14 @@ options
             {{ form_start(form,
                 {
                     attr: {
-                        class: 'space-y-6 w-full',
-                        action: action ?? app.request.requesturi,
-                        'hx-boost': 'true',
-                        'hx-swap': 'innerHTML',
-                        'hx-target': '#slideout-content',
-                        '@htmx:after-on-load': 'htmxDispatch({
-                            name: "'~form.vars.name~'",
-                        })',
-                        '@htmx:before-request': 'document.body.querySelector("button#'~form.vars.id~'_submit").disabled = true',
-                        '@htmx:after-request': 'document.body.querySelector("button#'~form.vars.id~'_submit").disabled = false',
-                        '@htmx:response-error': 'responseError($event, "'~form.vars.id~'");',
-                        '@htmx:send-error': 'responseError($event, "'~form.vars.id~'");',
-                        'hx-encoding': 'multipart/form-data'
-                    }
+                    class: 'space-y-6 w-full',
+                    action: action ?? app.request.requesturi,
+                    'x-slideout-form': '{ formId: "'~form.vars.id~'", formName: "'~form.vars.name~'", flowName: "'~flow.name~'" }',
+                    'hx-boost': 'true',
+                    'hx-swap': 'innerHTML',
+                    'hx-target': '#slideout-content',
+                    'hx-encoding': 'multipart/form-data',
+                }
                     | merge(form_attr|default({}))
                 }
             )}}

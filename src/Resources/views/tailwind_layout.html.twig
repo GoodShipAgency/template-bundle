@@ -36,11 +36,9 @@
         'disableWeekends': disable_weekends|default(false),
     } %}
 
-    <div
-        class="relative date-picker"
-        x-data="{}"
-        x-init="window.initialiseDatePicker('#' + $el.firstElementChild.id, {{ datepickerOptions|json_encode }});"
-        x-cloak
+    <div class="relative date-picker"
+         x-datepicker="{{ datepickerOptions|json_encode }}"
+         x-cloak
     >
         {{ block('form_widget_simple') }}
 
@@ -63,10 +61,8 @@
         'disableWeekends': disable_weekends|default(false),
     } %}
 
-    <div
-        class="relative date-picker"
-         x-data="{}"
-         x-init="window.initialiseDatePicker('#' + $el.firstElementChild.id, {{ datepickerOptions|json_encode }})"
+    <div class="relative date-picker"
+         x-datepicker="{{ datepickerOptions|json_encode }}"
          x-cloak
     >
         {{ block('form_widget_simple') }}
@@ -109,14 +105,13 @@
         {%- set required = false -%}
     {%- endif -%}
 
-    <input
-        type="{{ type }}"
-        id="{{ id }}"
-        name="{{ full_name }}"
-        class="{{- block('input_class') -}}"
-        {{ block('widget_attributes') }}
-        {% if value is not empty %}value="{{ value }}" {% endif %}
-        {% if required is defined and required %}required {% endif %}
+    <input type="{{ type }}"
+           id="{{ id }}"
+           name="{{ full_name }}"
+           class="{{- block('input_class') -}}"
+            {{ block('widget_attributes') }}
+            {% if value is not empty %}value="{{ value }}" {% endif %}
+            {% if required is defined and required %}required {% endif %}
     />
 {%- endblock form_widget_simple -%}
 

@@ -36,13 +36,22 @@
         'disableWeekends': disable_weekends|default(false),
     } %}
 
-    <div
-        class="relative date-picker"
-        x-data="{}"
-        x-init="window.initialiseDatePicker('#' + $el.firstElementChild.id, {{ datepickerOptions|json_encode }});"
-        x-cloak
-    >
-        {{ block('form_widget_simple') }}
+    {%- set type = type|default('text') -%}
+    {%- if type == 'range' or type == 'color' -%}
+        {# Attribute "required" is not supported #}
+        {%- set required = false -%}
+    {%- endif -%}
+
+    <div class="relative date-picker" x-cloak>
+        <input type="{{ type }}"
+               id="{{ id }}"
+               name="{{ full_name }}"
+               class="{{- block('input_class') -}}"
+               x-datepicker="{{ datepickerOptions|json_encode }}"
+                {{ block('widget_attributes') }}
+                {% if value is not empty %}value="{{ value }}" {% endif %}
+                {% if required is defined and required %}required {% endif %}
+        />
 
         <div class="absolute top-0 right-0 px-2 py-2 pointer-events-none">
             <svg class="h-6 w-6 text-gray-400"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -63,13 +72,22 @@
         'disableWeekends': disable_weekends|default(false),
     } %}
 
-    <div
-        class="relative date-picker"
-         x-data="{}"
-         x-init="window.initialiseDatePicker('#' + $el.firstElementChild.id, {{ datepickerOptions|json_encode }})"
-         x-cloak
-    >
-        {{ block('form_widget_simple') }}
+    {%- set type = type|default('text') -%}
+    {%- if type == 'range' or type == 'color' -%}
+        {# Attribute "required" is not supported #}
+        {%- set required = false -%}
+    {%- endif -%}
+
+    <div class="relative date-picker" x-cloak>
+        <input type="{{ type }}"
+               id="{{ id }}"
+               name="{{ full_name }}"
+               class="{{- block('input_class') -}}"
+               x-datepicker="{{ datepickerOptions|json_encode }}"
+                {{ block('widget_attributes') }}
+                {% if value is not empty %}value="{{ value }}" {% endif %}
+                {% if required is defined and required %}required {% endif %}
+        />
 
         <div class="absolute top-0 right-0 px-2 py-2 pointer-events-none">
             <svg class="h-6 w-6 text-gray-400"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -109,14 +127,13 @@
         {%- set required = false -%}
     {%- endif -%}
 
-    <input
-        type="{{ type }}"
-        id="{{ id }}"
-        name="{{ full_name }}"
-        class="{{- block('input_class') -}}"
-        {{ block('widget_attributes') }}
-        {% if value is not empty %}value="{{ value }}" {% endif %}
-        {% if required is defined and required %}required {% endif %}
+    <input type="{{ type }}"
+           id="{{ id }}"
+           name="{{ full_name }}"
+           class="{{- block('input_class') -}}"
+            {{ block('widget_attributes') }}
+            {% if value is not empty %}value="{{ value }}" {% endif %}
+            {% if required is defined and required %}required {% endif %}
     />
 {%- endblock form_widget_simple -%}
 

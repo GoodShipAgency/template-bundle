@@ -6,15 +6,13 @@ Options
     containerClass | defaults to 'ml-3 rounded-md relative'
 #}
 {% if block('content') is defined and block('content')|trim is not empty %}
-    <div
-        class="{{ containerClass|default('ml-3 rounded-md relative') }}"
-        x-data="dropoutMenu($el)"
-        @click.outside="closeMenu()"
+    <div class="{{ containerClass|default('ml-3 rounded-md relative') }}"
+         x-data="dropoutMenu($el)"
+         @click.outside="closeMenu()"
     >
-        <button
-            type="button"
-            class="dropout__trigger dropout__trigger--dark js-dropout-trigger"
-            @click="toggleMenu()"
+        <button type="button"
+                class="dropout__trigger dropout__trigger--dark js-dropout-trigger"
+                @click="toggleMenu()"
         >
             {% block icon %}
                 {# Heroicon name: dots-vertical #}

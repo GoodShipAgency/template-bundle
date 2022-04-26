@@ -22,7 +22,19 @@ Options
          x-trap="isOpen"
     >
         <div class="absolute inset-0 overflow-hidden">
-            <div x-description="Background overlay, show/hide based on slide-over state." class="absolute inset-0 slideout-base__overlay" @click="isOpen = false" aria-hidden="true"></div>
+            <div x-show="open"
+                 x-transition:enter="ease-in-out duration-500"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in-out duration-500"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 x-description="Background overlay, show/hide based on slide-over state."
+                 class="absolute inset-0 transition-opacity slideout-base__overlay"
+                 @click="isOpen = false"
+                 aria-hidden="true"
+            ></div>
+
             <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex sm:pl-16 slideout-base__panel-outer">
                 <div x-show="isOpen"
                      x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700"

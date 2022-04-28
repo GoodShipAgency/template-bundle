@@ -22,7 +22,7 @@ Options
          x-trap="isOpen"
     >
         <div class="absolute inset-0 overflow-hidden">
-            <div x-show="open"
+            <div x-show="isOpen"
                  x-transition:enter="ease-in-out duration-500"
                  x-transition:enter-start="opacity-0"
                  x-transition:enter-end="opacity-100"
@@ -31,7 +31,7 @@ Options
                  x-transition:leave-end="opacity-0"
                  x-description="Background overlay, show/hide based on slide-over state."
                  class="absolute inset-0 transition-opacity slideout-base__overlay"
-                 @click="isOpen = false"
+                 @click="close()"
                  aria-hidden="true"
             ></div>
 

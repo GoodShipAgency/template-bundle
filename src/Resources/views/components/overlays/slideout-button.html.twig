@@ -9,7 +9,7 @@ options:
     containerClass | defaults to "inline"
     class | defaults to "btn btn--size-md btn--color-secondary"
     flow | The form flow
-    buttonId
+    id | id to overide default button id. block button_id will override this. defaults to {{ flow.name }}_slideout_button
     path | required | the hx-get path.
     button
         label | required | The content of the button
@@ -23,7 +23,7 @@ options:
     <div x-data="window.overlayButton('slideout', $el, null, {{ confirmationDialog is defined ? confirmationDialog|json_encode : ''}})" class="{{ containerClass|default('inline') }}">
         {% block button_wrapper %}
             <a class="{{ class|default('btn btn--size-md btn--color-tertiary-outline') }}"
-               id="{% block button_id %}{{ flow.name }}_slideout_button{% endblock %}"
+               id="{% block button_id %}{{ id|default(false) ? id : flow.name ~ "_slideout_button" }}{% endblock %}"
                href="{{ path }}"
                data-target="#slideout-content"
                @click="{{ confirmationDialog is defined ? "openConfirmation($event)" : "open($event)" }}"

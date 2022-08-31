@@ -114,7 +114,9 @@ Blocks
                         </div>
                     {% endfor %}
 
-                    <button class="link link--primary text-sm mb-2 filters__clear-all-button" type="button" @click="removeAllFilters();">Clear All</button>
+                    {% block clear_filters_action %}
+                        <a class="link link--primary text-sm mb-2 filters__clear-all-button" href="?clearFilters=1">Clear All</a>
+                    {% endblock %}
                 </div>
             {% endif %}
         {% endblock %}

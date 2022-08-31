@@ -174,7 +174,7 @@
 {%- block form_errors -%}
     {%- if errors|length > 0 -%}
         <div class="mt-2">
-            <ul class="list-reset">
+            <ul class="list-reset errors">
                 {%- for error in errors -%}
                     <li class="mt-2 text-sm text-red-600">{{ error.message }}</li>
                 {%- endfor -%}

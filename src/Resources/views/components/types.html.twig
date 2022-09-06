@@ -14,21 +14,21 @@
     {% endif %}
 {% endmacro %}
 
-{% macro money(money, opts) %}
+{% macro money(money, opts) %}{% apply spaceless %}
     {% if money is empty %}
         {% if opts.empty is defined and opts.empty is not empty %}{{ opts.empty }}{% endif %}
     {% else %}
         {{ "%.2f"|format(money.amount / 100)|format_currency(money.currency.code) }}
     {% endif %}
-{% endmacro %}
+{% endapply %}{% endmacro %}
 
-{% macro moneyWholePart(money) %}
+{% macro moneyWholePart(money) %}{% apply spaceless %}
     {{ _self.money(money)|split('.')[0] }}
-{% endmacro %}
+{% endapply %}{% endmacro %}
 
-{% macro moneyDecimalPart(money) %}
+{% macro moneyDecimalPart(money) %}{% apply spaceless %}
     {{ _self.money(money)|split('.')[1] }}
-{% endmacro %}
+{% endapply %}{% endmacro %}
 
 {% macro nullable(value, opts) %}
     {% if value is empty %}

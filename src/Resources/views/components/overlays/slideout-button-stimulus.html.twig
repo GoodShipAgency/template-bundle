@@ -1,0 +1,48 @@
+{#
+Blocks
+    main
+    button_wrapper
+    button_id
+    confirmation_dialog_wrapper
+
+options:
+    containerClass | defaults to "inline"
+    class | defaults to "btn btn--size-md btn--color-secondary"
+    flow | The form flow
+    buttonId
+    path | required | the hx-get path.
+    button
+        label | required | The content of the button
+        abbr | If an abbreviation is required
+        disabled | whether the button should be disabled (requires a[data-disabled] selector styling)
+    confirmationDialog | details below
+    disableOnSuccess | Disable the button on a successful form submission
+#}
+
+{% block main %}
+    <div class="{{ containerClass|default('inline') }}"
+        {{ stimulus_controller('overlay-button', {
+                overlayType: 'slideout',
+                dialogOptions: confirmationDialog is defined ? confirmationDialog|json_encode : null,
+                swapElementSelector: '#slideout-content'
+            })
+        }}
+    >
+        {% block button_wrapper %}
+            <a class="{{ class|default('btn btn--size-md btn--color-tertiary-outline') }}"
+               id="{% block button_id %}{{ flow.name }}_slideout_button{% endblock %}"
+               href="{{ path }}"
+               data-overlay-button-target="button"
+               data-action="click->overlay-button#open"
+               data-disabled="{{ button.disabled|default('false') }}"
+               {% if disableOnSuccess|default(false) %}
+                   {{ stimulus_controller('disable-on-success', { flowName: flow.name}) }}
+               {% endif %}
+            >
+                {% if button.abbr is defined and button.abbr|trim is not empty %}<abbr title="{{button.abbr}}">{% endif %}
+                    {{ button.label|default(flow.metadata.title)}}
+                {% if button.abbr is defined %}</abbr>{% endif %}
+            </a>
+        {% endblock %}
+    </div>
+{% endblock %}

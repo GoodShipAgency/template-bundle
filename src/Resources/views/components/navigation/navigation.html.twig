@@ -14,14 +14,15 @@ blocks
     account_links
 #}
 
-{% macro menuItem(name, linkUrl, icon, disableTurbo) %}
+{% macro menuItem(name, linkUrl, icon, disableTurbo, classes) %}
     {% apply spaceless %}
         {% set subItems = subItems|default({}) %}
         {% set currentUrl = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
         {% set linkUrlPath = (linkUrl|split('?')|default(['']))[0] %}
         {% set isActive = currentUrl == linkUrlPath or currentUrl starts with linkUrlPath~'/' %}
+        {% set defaultActiveClasses = "flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md focus:outline-none transition ease-in-out duration-150 group " ~ (not isActive ? "side-nav__item" : "side-nav__item--active")  ~ "" %}
 
-        <a href="{{ linkUrl }}" class="flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md focus:outline-none transition ease-in-out duration-150 group {{ not isActive ? 'side-nav__item' : 'side-nav__item--active' }}" {{ disableTurbo|default(false) ? "data-turbo='false'" : "" }}>
+        <a href="{{ linkUrl }}" class="{{ classes|default('') ? classes : defaultActiveClasses }}" {{ disableTurbo|default(false) ? "data-turbo='false'" : "" }}>
             {% if icon is not empty %}
                 <svg class="mr-4 h-6 w-6 transition ease-in-out duration-150 side-nav__item-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     {{ icon|raw }}
@@ -156,7 +157,7 @@ blocks
                                 <div class="flex flex-wrap">
                                     {% block account_links %}{% endblock %}
 
-                                    <a class="text-xs font-medium link" href="{{ logoutPath }}" data-turbo="false">Logout</a>
+                                    {{ _self.menuItem('Logout', logoutPath, '', true, 'text-xs font-medium link') }}
                                 </div>
                             </div>
                         </div>

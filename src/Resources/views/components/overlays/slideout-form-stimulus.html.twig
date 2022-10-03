@@ -1,0 +1,98 @@
+{% form_theme form 'layouts/forms/tailwind.html.twig' %}
+{#
+Blocks
+    actions | actions for the form, if no actions, a submit button will be displayed.
+options
+    flow
+        title
+        subtitle
+        buttonLabel
+        successCallback
+    form
+#}
+{% set actions %}
+    {% block actions %}{% endblock %}
+{% endset %}
+
+<turbo-frame id="slideout-form-stimulus-{{ form.vars.name }}" class="flex flex-col flex-1 slideout__container">
+    {# Header #}
+    <div class="px-4 py-6 sm:px-6 slideout__heading">
+        <div class="flex items-start justify-between space-x-3">
+            <div class="space-y-1">
+                <h2 class="text-lg font-medium slideout__heading-text" id="slideout-title">
+                    {{ flow.metadata.title }}
+                </h2>
+                {% if flow.metadata.subtitle is defined and flow.metadata.subtitle is not empty %}
+                    <p class="text-sm slideout__heading-subtext">
+                        {{ flow.metadata.subtitle }}
+                    </p>
+                {% endif %}
+            </div>
+
+            <div class="h-7 flex items-center">
+                <button type="button"
+                        class="rounded-md slideout__close-button"
+                        @click="$dispatch('slideout-close')"
+                >
+                    <span class="sr-only">Close panel</span>
+                    <svg class="h-6 w-6" x-description="Heroicon name: outline/x" xmlns="http://www.w3.org/2000/svg"
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-6 space-y-6 sm:py-0 sm:space-y-0 w-full h-full flex flex-col slideout__content">
+        {% if success is defined and success == true %}
+            <div class="p-4 js-overlay-alert-container">
+                {% include "@MashboTemplate/components/alerts/alert.html.twig" with {'message': 'Form successfully sent', 'alertType': 'success'} %}
+            </div>
+        {% endif %}
+
+        <div class="p-4 js-overlay-error-container hidden" data-form-error-id="{{ form.vars.id }}">
+            {% include "@MashboTemplate/components/alerts/alert.html.twig" with {'message': 'An error has occured, please reload and try again.', 'alertType': 'error'} %}
+        </div>
+
+        <div class="mx-auto py-6 px-4 max-w-xl w-full">
+            {{ form_start(form,
+                {
+                    attr: {
+                    class: 'space-y-6 w-full',
+                    action: action ?? app.request.requesturi,
+                    'data-controller': 'slideout-form',
+                    'data-slideout-form-form-id-value': form.vars.id,
+                    'data-slideout-form-form-name-value': form.vars.name,
+                    'data-slideout-form-flow-name-value': flow.name,
+                    'data-turbo-frame': 'app_main'
+                }
+                    | merge(form_attr|default({}))
+                }
+            ) }}
+            {{ form_rest(form) }}
+
+            {% if actions|trim is not empty %}
+                {{ actions }}
+            {% else %}
+                <div class="flex items-center justify-end">
+                    <button data-slideout-form-target="cancel"
+                            data-action="click->slideout-form#slideoutClose"
+                            type="button"
+                            @click="$dispatch('slideout-close');"
+                            class="btn btn--color-tertiary-outline btn--size-md mr-2">
+                        Cancel
+                    </button>
+                    <button data-slideout-form-target="submit"
+                            id="{{ form.vars.id }}_submit"
+                            class="btn btn--size-md slideout__submit-button"
+                            type="submit">
+                        {{ flow.metadata.buttonLabel|default('Submit') }}
+                    </button>
+                </div>
+            {% endif %}
+            {{ form_end(form) }}
+        </div>
+    </div>
+</turbo-frame>

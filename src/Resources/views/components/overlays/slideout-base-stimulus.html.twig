@@ -1,0 +1,51 @@
+{#
+Blocks
+    outer_content | this would contain the button to open the slideout
+    slideout_content
+Options
+    containerClass | defaults to "w-screen max-w-xl"
+#}
+<div class="slideout-base__outer-container"
+    {{ stimulus_controller('overlay') }}
+>
+    {% block outer_content %}{% endblock %}
+
+    <div class="fixed inset-0 overflow-hidden z-50 js-slideout-container slideout-base__container hidden"
+         data-action="keydown->overlay#onKeyDown"
+         aria-modal="true"
+         data-overlay-target="container"
+    >
+        <div class="absolute inset-0 overflow-hidden">
+            <div data-transition-enter="ease-in-out duration-500"
+                 data-transition-enter-start="opacity-0"
+                 data-transition-enter-end="opacity-100"
+                 data-transition-leave="ease-in-out duration-500"
+                 data-transition-leave-start="opacity-100"
+                 data-transition-leave-end="opacity-0"
+                 class="absolute inset-0 transition-opacity slideout-base__overlay hidden"
+                 data-action="click->overlay#close"
+                 data-overlay-target="overlay"
+                 aria-hidden="true"
+            ></div>
+
+            <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex sm:pl-16 slideout-base__panel-outer">
+                <div data-transition-enter="transform transition ease-in-out duration-500 sm:duration-700"
+                     data-transition-enter-start="translate-x-full"
+                     data-transition-enter-end="translate-x-0"
+                     data-transition-leave="transform transition ease-in-out duration-500 sm:duration-700"
+                     data-transition-leave-start="translate-x-0"
+                     data-transition-leave-end="translate-x-full"
+                     class="{{ containerClass|default('w-screen max-w-full sm:max-w-xl') }} slideout-base__panel hidden"
+                     tabindex="0"
+                     data-overlay-target="panel"
+                >
+                    <div class="h-full flex flex-col bg-white shadow-xl overflow-y-scroll">
+                        <div class="flex-1 flex flex-col" id="slideout-content">
+                            {% block slideout_content %}{% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

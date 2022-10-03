@@ -22,7 +22,7 @@ blocks
         {% set isActive = currentUrl == linkUrlPath or currentUrl starts with linkUrlPath~'/' %}
         {% set defaultActiveClasses = "flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md focus:outline-none transition ease-in-out duration-150 group " ~ (not isActive ? "side-nav__item" : "side-nav__item--active")  ~ "" %}
 
-        <a href="{{ linkUrl }}" class="{{ classes|default('') ? classes : defaultActiveClasses }}" {{ disableTurbo|default(false) ? "data-turbo='false'" : "" }}>
+        <a href="{{ linkUrl }}" class="{{ classes|default(false) ? classes : defaultActiveClasses }}" {{ disableTurbo|default(false) ? "data-turbo='false'" : "" }}>
             {% if icon is not empty %}
                 <svg class="mr-4 h-6 w-6 transition ease-in-out duration-150 side-nav__item-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     {{ icon|raw }}

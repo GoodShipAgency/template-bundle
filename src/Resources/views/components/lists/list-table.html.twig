@@ -160,7 +160,7 @@
                                 {% endif %}
                             </tr>
                         {% else %}
-                            <tr><td class="px-6 p-4 bg-gray-100 text-gray-700 list-table__no-results" colspan="{{ headings|length }}">No Results Found</td></tr>
+                            <tr><td class="px-6 p-4 bg-gray-100 text-gray-700 list-table__no-results" colspan="{{ headings|length + (block('actions') is defined ? 1 : 0) }}">No Results Found</td></tr>
                         {% endfor %}
 
                     </tbody>

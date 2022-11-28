@@ -1,8 +1,14 @@
+{#
+    Options
+    ?empty: string
+    ?format: string | default: 'F jS Y'
+    ?timezone: string | default null
+#}
 {% macro date(date, opts) %}{% apply spaceless %}
     {% if date is empty %}
         {% if opts.empty is defined and opts.empty is not empty %}{{ opts.empty }}{% endif %}
     {% else %}
-        <time datetime="{{ date|date('Y-m-d') }}">{{ date|date(opts.format|default('F jS Y')) }}</time>
+        <time datetime="{{ date|date('Y-m-d', opts.timezone|default(null)) }}">{{ date|date(opts.format|default('F jS Y'), opts.timezone|default(null)) }}</time>
     {% endif %}
 {% endapply %}{% endmacro %}
 
@@ -55,9 +61,9 @@
 {% endmacro %}
 
 {#
-    Options
-    true: string | default: 'True'
-    false: string | default: 'False'
+Options
+true: string | default: 'True'
+false: string | default: 'False'
 #}
 {% macro boolean(value, opts) %}
     {% if (value is empty) and (value != false) %}

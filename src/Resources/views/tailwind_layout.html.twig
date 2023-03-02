@@ -29,7 +29,7 @@
         'enableTime': true,
         'time_24hr': true,
         'altFormat': 'F J Y \\a\\t H:i',
-        'dateFormat': 'Y-m-d H:i:S',
+        'dateFormat': 'Y-m-d H:i',
         'minDate': min_date is defined ? min_date|date('Y-m-d H:i') : null,
         'maxDate': max_date is defined ? max_date|date('Y-m-d H:i') : null,
         'disable': disabled_dates|default([])|map((disableDate) => disableDate|date('Y-m-d')),

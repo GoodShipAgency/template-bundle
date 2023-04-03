@@ -1,0 +1,31 @@
+{#
+Blocks
+    outer_content | this would contain the button to open the slideout
+    modal_content
+Options
+    containerClass | defaults to "w-screen max-w-xl"
+    overlayType | defaults to 'modal'
+    modalContentId | defaults to 'modal-content'
+#}
+<div {{ stimulus_controller('overlay', { overlayType: overlayType|default('modal') }) }} class="modal">
+    <div class="fixed z-10 inset-0 overflow-y-auto z-50 js-modal-container modal-base__container hidden bg-white"
+         data-action="keydown->overlay#onKeyDown"
+         aria-labelledby="modal-title"
+         aria-modal="true"
+         data-overlay-target="container"
+    >
+        <div class="inline-block align-bottom text-left transform transition-all w-full modal__content pb-4"
+             id="{{ modalContentId|default('modal-content') }}"
+             data-transition-enter="ease-out duration-300"
+             data-transition-enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             data-transition-enter-end="opacity-100 translate-y-0 sm:scale-100"
+             data-transition-leave="ease-in duration-200"
+             data-transition-leave-start="opacity-100 translate-y-0 sm:scale-100"
+             data-transition-leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+             data-overlay-target="panel"
+             tabindex="0"
+        >
+            {% block modal_content %}{% endblock %}
+        </div>
+    </div>
+</div>

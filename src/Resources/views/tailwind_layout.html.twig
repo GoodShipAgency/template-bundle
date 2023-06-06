@@ -32,6 +32,8 @@
         'dateFormat': 'Y-m-d H:i',
         'minDate': min_date is defined ? min_date|date('Y-m-d H:i') : null,
         'maxDate': max_date is defined ? max_date|date('Y-m-d H:i') : null,
+        'minTime': min_time is defined ? min_time|date('H:i') : null,
+        'maxTime': max_time is defined ? max_time|date('H:i') : null,
         'disable': disabled_dates|default([])|map((disableDate) => disableDate|date('Y-m-d')),
         'disableWeekends': disable_weekends|default(false),
     } %}

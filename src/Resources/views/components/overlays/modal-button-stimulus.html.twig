@@ -1,0 +1,37 @@
+{#
+options:
+    containerClass | defaults to "inline-block"
+    class | defaults to "btn btn--size-md btn--color-secondary"
+    flow | The form flow
+    buttonId | can be used instead of flow name if no form is required
+    path | required | the hx-get path.
+    button
+        label | The content of the button
+#}
+<div class="{{ containerClass|default('inline-block') }}"
+        {{ stimulus_controller('overlay-button', {
+            overlayType: 'modal',
+            dialogOptions: confirmationDialog is defined ? confirmationDialog|json_encode : null,
+            swapElementSelector: '#modal-content'
+        })
+        }}
+>
+    {% block button_wrapper %}
+        <a class="{{ class|default('btn btn--size-md btn--color-tertiary-outline') }}"
+           id="{% block button_id %}{{ flow.name }}_modal_button{% endblock %}"
+           href="{{ path }}"
+           data-overlay-button-target="button"
+           data-action="click->overlay-button#open"
+           data-disabled="{{ button.disabled|default('false') }}"
+                {% if disableOnSuccess|default(false) %}
+                    {{ stimulus_controller('disable-on-success', { flowName: flow.name}) }}
+                {% endif %}
+        >
+            {% if button.abbr is defined and button.abbr|trim is not empty %}<abbr title="{{button.abbr}}">{% endif %}
+                {% block button_content %}
+                    {{ button.label|default(flow.metadata.title)}}
+                {% endblock %}
+                {% if button.abbr is defined %}</abbr>{% endif %}
+        </a>
+    {% endblock %}
+</div>

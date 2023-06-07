@@ -36,6 +36,7 @@
         'maxTime': max_time is defined ? max_time|date('H:i') : null,
         'disable': disabled_dates|default([])|map((disableDate) => disableDate|date('Y-m-d')),
         'disableWeekends': disable_weekends|default(false),
+        'disableDays': disabled_days|default(false),
     } %}
 
     {%- set type = type|default('text') -%}
@@ -72,6 +73,7 @@
         'maxDate': max_date is defined ? max_date|date('Y-m-d H:i') : null,
         'disable': disabled_dates|default([])|map((disableDate) => disableDate|date('Y-m-d')),
         'disableWeekends': disable_weekends|default(false),
+        'disableDays': disabled_days|default(false),
     } %}
 
     {%- set type = type|default('text') -%}

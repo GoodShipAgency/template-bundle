@@ -16,9 +16,26 @@
     {% if date is empty %}
         {% if opts.empty is defined and opts.empty is not empty %}{{ opts.empty }}{% endif %}
     {% else %}
-        <time datetime="{{ date|date('Y-m-d H:i:s') }}">{{ date|date(opts.format|default('F jS Y \\a\\t H:i')) }}</time>
+        <time datetime="{{ date|date('Y-m-d H:i:s') }}">{{ date|date(opts.format|default('F jS Y \\a\\t H:i'), opts.timezone|default(null)) }}</time>
     {% endif %}
 {% endmacro %}
+
+{% macro dateWithTimezone(date, opts = []) %}{% apply spaceless %}
+    {% if not opts.timezone is defined or opts.timezone is empty %}
+        <span style="color: red;">TIMEZONE NOT SET</span>
+    {% endif %}
+
+    {{ _self.date(date, opts) }}
+{% endapply %}{% endmacro %}
+
+{% macro datetimeWithTimezone(date, opts = []) %}{% apply spaceless %}
+    {% if not opts.timezone is defined or opts.timezone is empty %}
+        <span style="color: red;">TIMEZONE NOT SET</span>
+    {% endif %}
+
+    {{ _self.datetime(date, opts) }}
+{% endapply %}{% endmacro %}
+
 
 {% macro money(money, opts) %}{% apply spaceless %}
     {% if money is empty %}

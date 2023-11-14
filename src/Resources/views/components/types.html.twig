@@ -16,7 +16,7 @@
     {% if date is empty %}
         {% if opts.empty is defined and opts.empty is not empty %}{{ opts.empty }}{% endif %}
     {% else %}
-        <time datetime="{{ date|date('Y-m-d H:i:s') }}">{{ date|date(opts.format|default('F jS Y \\a\\t H:i')) }}</time>
+        <time datetime="{{ date|date('Y-m-d H:i:s') }}">{{ date|date(opts.format|default('F jS Y \\a\\t H:i'), opts.timezone|default(null)) }}</time>
     {% endif %}
 {% endmacro %}
 

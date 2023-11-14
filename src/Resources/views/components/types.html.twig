@@ -20,7 +20,7 @@
     {% endif %}
 {% endmacro %}
 
-{% macro dateWithTimezone(date, opts) %}{% apply spaceless %}
+{% macro dateWithTimezone(date, opts = []) %}{% apply spaceless %}
     {% if opts.timezone is empty %}
         <span style="color: red;">TIMEZONE NOT SET</span>
     {% endif %}
@@ -28,7 +28,7 @@
     {{ _self.date(date, opts) }}
 {% endapply %}{% endmacro %}
 
-{% macro datetimeWithTimezone(date, opts) %}{% apply spaceless %}
+{% macro datetimeWithTimezone(date, opts = []) %}{% apply spaceless %}
     {% if opts.timezone is empty %}
         <span style="color: red;">TIMEZONE NOT SET</span>
     {% endif %}

@@ -20,16 +20,16 @@
     {% endif %}
 {% endmacro %}
 
-{% macro dateWithTimezone(date, timezone, opts) %}{% apply spaceless %}
-    {% if timezone is empty %}
+{% macro dateWithTimezone(date, opts) %}{% apply spaceless %}
+    {% if opts.timezone is empty %}
         <span style="color: red;">TIMEZONE NOT SET</span>
     {% endif %}
 
     {{ _self.date(date, opts|merge({timezone: timezone})) }}
 {% endapply %}{% endmacro %}
 
-{% macro datetimeWithTimezone(date, timezone, opts) %}{% apply spaceless %}
-    {% if timezone is empty %}
+{% macro datetimeWithTimezone(date, opts) %}{% apply spaceless %}
+    {% if opts.timezone is empty %}
         <span style="color: red;">TIMEZONE NOT SET</span>
     {% endif %}
 

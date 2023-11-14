@@ -21,7 +21,7 @@
 {% endmacro %}
 
 {% macro dateWithTimezone(date, opts = []) %}{% apply spaceless %}
-    {% if opts.timezone is empty %}
+    {% if not opts.timezone is defined or opts.timezone is empty %}
         <span style="color: red;">TIMEZONE NOT SET</span>
     {% endif %}
 
@@ -29,7 +29,7 @@
 {% endapply %}{% endmacro %}
 
 {% macro datetimeWithTimezone(date, opts = []) %}{% apply spaceless %}
-    {% if opts.timezone is empty %}
+    {% if not opts.timezone is defined or opts.timezone is empty %}
         <span style="color: red;">TIMEZONE NOT SET</span>
     {% endif %}
 

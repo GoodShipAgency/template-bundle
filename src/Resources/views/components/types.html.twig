@@ -25,7 +25,7 @@
         <span style="color: red;">TIMEZONE NOT SET</span>
     {% endif %}
 
-    {{ _self.date(date, opts|merge({timezone: timezone})) }}
+    {{ _self.date(date, opts) }}
 {% endapply %}{% endmacro %}
 
 {% macro datetimeWithTimezone(date, opts) %}{% apply spaceless %}
@@ -33,7 +33,7 @@
         <span style="color: red;">TIMEZONE NOT SET</span>
     {% endif %}
 
-    {{ _self.datetime(date, opts|merge({timezone: timezone})) }}
+    {{ _self.datetime(date, opts) }}
 {% endapply %}{% endmacro %}
 
 

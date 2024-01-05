@@ -111,19 +111,6 @@
     {{- parent() -}}
 {%- endblock button_widget %}
 
-{% block form_start %}
-    {%- if errors|length > 0 -%}
-        <div class="mt-2">
-            <ul class="list-reset">
-                {%- for error in errors -%}
-                    <li class="mt-2 text-sm text-red-600">{{ error.message }}</li>
-                {%- endfor -%}
-            </ul>
-        </div>
-    {%- endif -%}
-    {{- parent() -}}
-{% endblock %}
-
 {%- block form_widget_simple -%}
     {%- set type = type|default('text') -%}
     {%- if type == 'range' or type == 'color' -%}
